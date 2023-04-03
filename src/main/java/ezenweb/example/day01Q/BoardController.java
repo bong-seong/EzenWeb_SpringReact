@@ -26,7 +26,7 @@ public class BoardController {
 
     @GetMapping("/hello")
     public String hello(){
-        return "Hello!!";
+        return "Hello!!!!!";
     }
 
 }
