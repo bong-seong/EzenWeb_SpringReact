@@ -1,0 +1,12 @@
+롬복 : java 제공하는 라이브러리
+	반복되는 getter , setter , 생성자 , toString() 등 반복 메소드 코드를 줄여주는 목적
+	어노테이션
+
+	@NoArgsConstructor	: 빈생성자 자동 생성
+	@AllArgsConstructor	: 풀생성자 자동 생성
+	@Setter@Getter		: getter , setter 메소드 자동 생성
+	@ToString		: toString( 메소드 자동 생성( 오버플로우 문제 발생 할 수 있음 )
+	@Builder			: 빌더 패턴 [ new 사용x ] 
+		클래스 생성자 단점 	: 정의된 생성자의 매개변수 개수와 타입 일치화 
+		클래스명.builder().필드명(데이터).필드명(데이터).필드명(데이터).build();
+		- 생성자 규칙에 대한 자유 

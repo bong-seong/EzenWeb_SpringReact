@@ -28,5 +28,4 @@ public class BoardController {
     public String hello(){
         return "Hello!!!!!";
     }
-
 }

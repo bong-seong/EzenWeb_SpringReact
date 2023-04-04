@@ -15,7 +15,7 @@ public class Ex2 {
         Dao dao = new Dao();
         // 4. DB에 저장하기
         boolean result = dao.setMember( dto );
-        System.out.println("result = " + result);
+        System.out.println( "result = " + result );
 
         // 4. JPA 이용한 DB 처리
 

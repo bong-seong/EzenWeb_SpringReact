@@ -1,0 +1,61 @@
+라이브러리 : 도구/가구
+프레임워크 : 집 뼈대
+
+스프링 특징
+	스프링 IoC 	: 제어( 객체 사용제어권 spring 넘기기 ) 역전
+	스프링 DI		: 의존성 주입 [ 컨테이터 빈(bean) 등록 ] 
+
+스프링 컨테이너 [ 스프링 MVC 관리 ]
+
+스프링 부트
+
+	설치
+	 implementation 'org.springframework.boot:spring-boot-starter-web'
+	@SpringBootApplication	: 스프링부트 [ RESTful , MVC , 내장톰캣 등등 제공 ] 
+	* 해당 클래스는 모든 mvc 클래스들 보다 상위 위치 
+			1. 모든 MVC 컴포넌트 관련 어노테이션 빈 등록
+				@RestController	@Service
+				@Repository	@Entity
+
+	@RestController 		: 해당 클래스는 스프링 컨테이너 등록
+	@GetMapping("URL")	: HTTP GET 메소드를 매핑 [연결]
+	@Autowrite		: 빈 등록 [ new X , builder X ]
+
+
+DAO 사용시 반복되는 CRUD SQL 줄이기 위한 JPA 라이브러리 사용
+
+실무 : 간단한 CRUD JPA 
+JAP : 자바 퍼시스턴스 AP			vs 		MYVATIS
+	목적 : SQL 몰라도 SQL 문법을 JAVA문법으로 대체 
+	* 관계형 데이터베이스를 객체로 표현
+	* CRUD 메소드 제공 
+
+	<------------------------------------- 매핑 ---------------------------------->
+	DB <-----------------> 스프링(spring data) <--------- JPA ---------> 클래스
+			   application.properties
+			   - DB URL
+
+		   
+	DTO --- 변환메소드 구현 ---> 엔티티	
+	1. .save( 엔티티 ) : 해당 엔티티 객체를 매핑된 테이블에 레코드로 insert
+	
+	설치
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	설정
+		# Spring data 스프링이 DB 연결 관리
+		# 1. MySQL 드라이버
+		spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+		# 2. DB URL
+		spring.datasource.url=jdbc:mysql://localhost:3306/springweb
+		# 3. DB 계정 ID
+		spring.datasource.username=root
+		# 4. DB 계정 PASSWORD * 띄어쓰기도 포함되므로 주의
+		spring.datasource.password=1234
+
+
+	어노테이션
+	@Entity						: DB 테이블 ----- 매핑(연결) ------ 클래스
+	@Table( name="테이블명" )				: 테이블명 정하기
+	@Id						: pk	!! : 1개 필수
+	@GeneratedValue( strategy = GenerationType.IDENTITY ) : auto key
+	@Column					: DB 필드
