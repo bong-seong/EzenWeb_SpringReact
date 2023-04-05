@@ -16,7 +16,7 @@ public class DeleteMappingController {
     // 1.
     @DeleteMapping("/method1")
     public ParamDto method1( ParamDto dto ) {
-        log.info( "delete method1 : " + dto );
+        log.info( "delete method1 : zzzzzzz" + dto);
         return dto;
     }
 
