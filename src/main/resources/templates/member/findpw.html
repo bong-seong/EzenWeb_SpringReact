@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호찾기</title>
+</head>
+<body>
+    <a href="/"> 홈으로 </a>
+    <form>
+        <table>
+            <tr>
+                <td>아이디[이메일] : </td> <td> <input type="text" name="memail" class="memail"> </td>
+            </tr>
+            <tr>
+                <td> 전화번호 :  </td> <td> <input type="text" name="mphone" class="mphone"> </td>
+            </tr>
+            <tr>
+                <td colspan="2"> <button type="button" onclick="findpw()"> 비밀번호찾기 </button> </td>
+            </tr>
+        </table>
+    </form>
+
+    <div class="findpw"></div>
+
+    <!-- JQuery -->
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/js/member.js" type="text/javascript"></script>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+시큐리티 용어
+	0. 접근주체 [ Principal ] : 접근 유저 
+	1. 인증 [ Authenicate ] : 로그인 [ 현재 유저 확인 ]
+	2. 인가 [ Authorize ] : 권한 검사 [ 로그인/인증 했는지 확인 ]
+	3. 권한 : 접근권한 [ role ] 
+
+
+시큐리티 인증,인가 구조 [ Default ]
+
+	HTTP 요청 들어온다 [ html form 전송 ]
+	1. 인증필터에 의해 로그인 요청을 가로채기
+			[ AuthenticationFilter ]
+
+	2. UsernamePasswordAuthenticationToken 발급
+			[ 계정과 패스워드 인증토큰 발급 ]
+			인증 전/ 실패 : anonymousUser
+			인증 성공 : 인증된 정보
+
+	3. AuthenticationManager
+	*.ProviderManager : 토큰 공급자
+		생성된 토큰을 서비스에게 전달
+
+	4. AuthenticationProvider : 인증 요구 [ 계정 보내줌 ]
+
+	5. UserDetailsService : 계정 인증 확인 [ locadUserByUsername 계정 인증 ]
+
+	6. 계정 인증후 UserDetails 반환 [ 실제 계정과 실제 패스워드 담는다. ]
+		[ UserDetails 실제 계정과 패스워드 포함 ]		
+
+	+++ 실제 계정과 실제 패스워드 [ Repository ] 
+
+	7. AuthenticationProvider : 인증요구 [ 계정 보내줌 ]
+		[ 입력받은 계정과 패스워드 = 토큰 ]
+		[ DB에서 확인된 계정과 패스워드 = UserDetails ]
+		- 패스워드 검증 [ 자동 ] passwordEncoder
+
+	8. AuthenticationManager : 검증 결과 된 토큰을 받는다.
+
+	9. 필터
+	
+	10. SecurityContextHolder : 검증 결과된 토큰 저장
+
+
+========================================================================
+
+시큐리티 인증,인가 구조 [ 커스터마이징 = 리모델링 ]
+
+	HTTP 요청 들어온다 [ html form 전송 ]
+	1. 인증필터에 의해 로그인 요청을 가로채기
+			[ AuthenticationFilter  수정 ]
+			.formLogin()
+                        			.loginPage("/member/login") 		: 로그인 HTML 열리는 매핑 URL 
+		            		.loginProcessingUrl("/member/login")	: 로그인 처리할 매핑 URL 정의 [ form
+		 	            .defaultSuccessUrl("/") 		: 로그인 성공시 매핑 URL 
+		                         .failureUrl("/member/login")		: 로그인 실패시 매핑 URL
+		                         .usernameParameter("memail") 	: 계정 필드명 수정 [ form input name ]
+		                         .passwordParameter("mpassword") 	: 패스워드 필드명 수정 [ form input name ]
+		
+
+
+
+
+
+
+
+
+
+
+
+

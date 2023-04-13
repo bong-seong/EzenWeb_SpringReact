@@ -1,0 +1,157 @@
+아키텍처 : 동작원리 설계도
+			
+
+
+
+
+
+	HTML / CSS / JS(REACT.JS) : 프론트엔드 서버		vs 	   React Native
+
+	JAVA( Spring(서블릿) / JSP(서블릿) ) : 백엔드 서버
+
+	DB : DB서버
+
+	자바 서블릿 컨테이너 [ 아파치 톰캣 ] : 웹서버
+
+	AWS : 배포서버
+
+
+	스프링프레임워크 : 엔터프라이즈 프레임워크 [ * 대규모 프로젝트 개발시 개발자에게 편의성 제공 ]
+
+	AOP : 관점지향 프로그래밍		vs		OOP : 객체지향 프로그래밍
+	ORM : 객체관계 매핑 기술
+		[ JPA ] : ORM 기술 표준 사용하는 라이브러리
+	DI : 의존성 주입
+	IOC : 제어를 역전
+
+	@SpringBootApplication
+		@ComponentScan
+			@Controller @RestController @Repository @Service @Configuration = @Component 포함
+			@Component @Bean 
+
+		@Autowired
+			1. @Component 달린 클래스이면 객체 자동 주입
+			2. @Bean 달린 메소드를 불러 생성해서 넘겨준다.
+
+	
+
+
+	class 학생명단 { }
+
+	class 학교 {
+		private 학생명단 명단;
+		
+		// 생성자를 이용한 의존성 주입
+		private 학교 ( 학생명단 명단 ){
+			this.명단 = 명단;
+		}
+
+		// setter를 이용한 의존성주입 ???
+		public set명단( 학생명단 명단 ) { 
+			this.명단 = 명단;
+		}
+	}
+	-----------------------------------------------------------------------------------------------------------------------
+
+	스프링 레이어드 아키텍처
+	
+		프레젠테이션 레이어	View , Controller		DTO
+	
+		비지니스 레이어		Service			Model( DTO , Entity )
+	
+		퍼시스턴스 레이어		Repository		Entity
+
+		데이터베이스 레이어	MySQL
+
+	스프링 MVC 란
+		Model : 비지니스 영역
+		View , Controller : 프레젠테이션 레이어 영역
+		데이터접근계층 : DAO , Repository
+
+	스프링 MVC 패키지 관리 [ 개발자마다 상이 ]
+		
+		Start.class [ @SpringBootApplication ]
+		controller 패키지
+			- ProductController
+			- MemberController
+		service 패키지
+			- ProductService
+			- MemberService
+		domain 패키지
+			- Dto 패키지
+				- ProductDto
+				- MemberDto
+			- Entity 패키지
+				- Product 패키지
+					- ProductEntity
+					- ProductEntityRepository
+				- Member 패키지
+					- MemberEntity
+					- MemberEntityRepository
+		configure 패키지 
+			- 각 기능별.class
+
+		---------------------------------------------------------------------------------------------------------
+		resource[ * 이름이 다를경우 스프링에서 인식 불가능 ] 
+			- application.properties	: 스프링 프로젝트 설정 파일
+
+			- static			: css , js , 이미지 , 동영상 등등
+
+			- templates		: html
+		
+
+		스프링 URL 구조
+			-
+			JSP : 프로젝트내 폴더/파일 위치가 곧 URL [ * URL 자동으로 생성 ]
+			프로젝트명\폴더명\파일명.jsp
+			localhost:8080\폴더명\파일명.jsp
+
+			-
+			SPRING : 매핑된 주소가 곧 URL
+			@GetMapping("/")
+			localhost:8080
+
+			-
+			REACT
+			
+
+
+
+
+
+
+
+
+		-- 엔티티의 레코드 생성날짜 , 수정날짜 자동주입
+
+		@MappedSuperclass			: 해당 클래스는 부모클래스로 사용하고 자식클래스에게 매핑정보 전달하겠다 라는 의미의 어노테이션
+		@EntityListeners( AuditingEntityListener.class) 	: 엔티티 변화에 따른 감시기능 [ * 필스 : start.class 에서 @EnableJpaAuditing 주입 ]
+		public class 클래스명 {
+			
+			@CreatedDate 		: 엔티티(레코드) 생성날짜를 해당 필드에 주입
+			private LocalDateTime 필드명				
+
+			@LastModifiedDate 	: 엔티티(레코드) 수정날짜를 해당 필드에 주입
+			private LocalDateTime 필드명				
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

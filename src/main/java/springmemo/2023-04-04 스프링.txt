@@ -1,0 +1,129 @@
+스프링		:
+		1. 자바 플랫폼을 위한 오픈 소스 프레임 워크 [ 전자정부 프레임워크 표준 ]
+		2. 다양한 API 제공
+
+스프링부트	:
+		1. 스프링에서 제공하는 라이브러리중 웹 관련된 API 모아둔 프레임워크
+		2. 웹 개발을 위한 복잡한 초기설정 간편하게 처리
+스프링부트 기본 설정
+	1. Build web						: 웹 관련 초기설정
+	2. including RESTful					: HTTP(get,post,put,delete) 기본 제공
+	3. applications using Spring MVC				: controller , servcie , repository , configure 관리
+	4. UsesApache Tomcat as the default embedded container 	: 내장 톰캣 제공
+
+스프링부트 프로젝트 생성 [ 인텔리제이 커뮤니티 버전 기준 ] 
+	1. start.spring.io
+		Project : Gradle - Groovy
+		Language : Java
+		Spring Boot : 2.7.10
+		Project Metadata : 프로젝트 정보
+		Packaging : Jar
+		Java 8
+		-----------------------------------
+		Dependencies : 외부라이브러리 추가
+			필요한 라이브러리 검색해서 추가
+	2. build.gradle 등록
+	3. application.properties 스프링 프로젝트의 설정 파일
+	4. 스프링 실행
+		- 해당 클래스보다 상위 패키지에 존재하는 클래스들(MVC)은 스프링부트가 못읽어옴!!
+		@SpringBootApplication
+		public class 클래스명 {
+	    		public static void main(String[] args) {
+			        SpringApplication.run( 클래스명.class );
+    			}
+		}
+
+	5. 스프링 실행 확인 
+		1. http://localhost:8080
+		2. Whitelabel Error Page [ 서버는 정상 실행 됨!! ]
+
+	---- 용어
+	스프링 빈(bean) : 스프링에서 관리하는 자바 객체들
+	
+	-- 주요 어노테이션
+	@SpringBootApplication
+		1.@ComponentScan	: 스프링부트 실행될때 컴포넌트 들을 스캔
+			컴포넌트 종류
+				1. @Controller		: MVC패턴에서 컨트롤러
+				2. @RestController		: MVC패턴에서 컨트롤러
+				3. @Service		: MVC패턴에서 서비스
+				4. @ Repository		: MVC패턴에서 데이터
+				5. @Configure		: MVC패턴에서 설정
+				* VIEW 는 패키지명으로 사용
+				resources	
+					static		: css, js , img 등등
+					templates	: html
+
+		RESTFUL API
+
+			[ 컨트롤 등록 ]
+			@Controller		: 해당 클래스를 스프링컨테이너 등록
+			@RestController		: 해당 클래스를 스프링 컨테이너 등록		@ResponseBody + @Controller 
+
+			[반환]
+			@ResponseBody		: 응답시 객체 형태	[ 해당 클래스가 @RestController 이면 생략가능 ]
+			리턴시 타입이 String 이면		Content-Type : 		text/plain;charset=URF-8
+			리턴시 타입이 Map,List 이면 		Content-Type :		application/json
+			리턴시 타입이 Dto 이면		Content-Type :		application/json
+			리턴시 타입이 Resource 이면		Content-Type :		application/json
+		
+			[ 매핑 ]	
+			@RequestMapping( value = "URL정의" , method = RequestMethod.GET )
+			@RequestMapping( value = "URL정의" , method = RequestMethod.POST )
+			@RequestMapping( value = "URL정의" , method = RequestMethod.PUT )
+			@RequestMapping( value = "URL정의" , method = RequestMethod.DELETE )
+				vs
+			@GetMapping("URL정의")
+			@PostMapping("URL정의")
+			@PutMapping("URL정의")
+			@DeleteMapping("URL정의")
+
+		[ 매개변수 요청 ]
+		1. HttpServletRequest request
+			요청 URL 	: http://localhost:8080/get/method1?매개변수명=데이터
+			매개변수 요청	: request.getParameter("매개변수명")
+
+		2. @GetMapping("/method2/{param1}/{param2}")
+			요청 URL 	: http://localhost:8080/get/method2/안녕/하하
+			매개변수 요청	: @PathVariable("param1") String param1
+
+		3. @RequestParam String param1, @RequestParam String param2
+			요청 URL		: http://localhost:8080/get/method3/?param1=안녕&param2=하하
+			매개변수 요청	: @RequestParam String param1 
+		4.
+		5.
+		6.
+
+	-- RESTful ( test : Talend API Tester [ 크롬 확장프로그램 ] )
+
+	-- 스프링 로그 [ 기록 ] 남기기
+		@slf4j		: 사용할 해당 클래스의 어노테이션 주입
+		스프링 로그 메소드 재공
+		로그레벨		[ trace < debug < info < warn < error ]
+			trace	: 디버그 보다 세분화된 정보 출력
+			debug	: 디버깅( 오류 또는 버그를 찾아가는 과정 ) 정보 로그할때 
+			info	: 진행상황 일반 정보 로그할때
+			warn	: 경고성 오류 정보 로그할때 [ catch ]
+			error	: 오류가 발생한 오류 정보 로그할때
+		vs
+		print()		: 세부정보 출력 어렵다
+			
+	2.
+		# 로깅 설정
+		# 1. 기록할 최소 레벨 선택 [ info 이상 레벨만 기록 ]
+		logging.level.root = info
+		# 2. 기록할 파일 경로 [ 경로 / 파일명 ]
+		logging.file.name=C:/java/spring.log
+	
+	
+
+
+
+
+
+
+
+
+
+
+

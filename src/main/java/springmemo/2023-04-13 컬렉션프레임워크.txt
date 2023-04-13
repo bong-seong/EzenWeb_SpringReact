@@ -1,0 +1,17 @@
+Collerction 자바 컬렉션 프레임워크 [ 수집(여러데이터 관리) 관련된 미리 만들어진 클래스/메소드 ] 
+	List	: ArrayList	: 인덱스 순서대로 저장하는 구조	[ 데이터 중복 O ]	
+	Map	: HashMap	: { 키 : 데이터 , 키 : 데이터 } 구조	[ 키 : 중복X , 데이터 : 중복O ]
+	Set	: HashSet		: { 데이터 , 데이터 , 데이터 } 구조	[ 중복x , 저장순서 보장 X ]
+
+	Collection<? extends GrantedAuthority>
+	
+	Collerction 으로 부터 상속/구현 받은 자식들 모두 대체 가능
+	? extends GrantedAuthority : GrantedAuthority 로 부터 상속받은 모든 클래스 가능
+		
+			
+			Collection : 할머니
+	
+		List		Map		Set
+
+		ArrayList		HashMap		HashSet
+		Vetor

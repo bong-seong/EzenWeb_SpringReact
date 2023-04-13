@@ -1,0 +1,79 @@
+	JPA Repository
+		메소드 
+		1. save( 엔티티 )			insert 대체
+			인수 : 엔티티		반환 : 저장된 레코드의 엔티티객체		Entity
+
+		2. findAll()			select 대체 [ 모든 레코드 검색 ]
+			인수 : x			반환 : 테이블내 모든 레코드 호출		List<Entity>
+
+		3. findById( pk )			select 대체 [ 특정 레코드 검색 ]
+			인수 : pk			반환 : pk와 동일한 레코드의 엔티티객체	Optional<NoteEntity>
+
+		4. delete( 엔티티 ) 			delete 대체
+			인수 : 삭제할 엔티티	반환 : void [ 없다 ]
+
+		5. 수정 [ 별도 메소드 존재하지 않음 ]
+			- setter 이용
+			- 현재 수정되는 메소드에서 @Transactional 필수
+	
+		* Optional : null 이 포함된 포장 클래스 [ null 오류를 회피하기 위한 안전성 보장 ]
+			NullPointerException 검사 가능 / 관련 메소드 제공
+			1. isPresent() : null 이면 false, 객체가 들어있으면 true / 
+			2. get() : 포장 클래스 내 엔티티 객체 호출
+
+		* 트랜잭션 : DB 용어
+		
+
+
+다른 클래스의 메소드 호출 하는 방법
+
+	1. 인스턴스객체
+		NoteService service = new NoteService();
+		service.write()
+
+	2. 정적 메소드 [ * 해당 메소드가 static 키워드 이면 바로 호출 가능 ]
+		NoteService.write()
+
+	3. 싱글톤
+		NoteService.getInstance().write();
+
+	4. 힙메모리 [ 1회성 ] 
+		new NoteService().write();
+
+	5. 스프링 빈 객체 주입
+		@Autowired
+		NoteService noteService;
+
+		noteService.write();
+
+
+
+
+
+
+
+DDL : 테이블/데이터베이스 정의어
+	create table/database 개체명;
+	drop table/database 개체명;
+	alter table/database 개체명;
+	rename table/database 개체명 to 개체명;
+	truncate table 개체명
+
+DML : 테이블 조작어
+	select * from 테이블명
+	update 테이블명 set 컬럼명 = 새로운값
+	delete from 테이블명 
+	insert into 테이블명 value 
+
+DLC : 제어어
+	grant : 계정 권한 부여
+	revoke : 계정 권한 제거
+
+TCL : 트랜잭션 제어 어
+	commit : 작업한 SQL 최종적인 완료 [ 영구저장 ] 
+	rollback : 작업한 SQL 취소 
+
+
+
+
+

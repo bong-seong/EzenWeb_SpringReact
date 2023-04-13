@@ -1,0 +1,72 @@
+	
+	JSP URI 구조 -> 프로젝트내 경로
+	SPRING URI구조 -> REST ful API 
+
+
+
+스프링 시큐리티 + 회사별 보안
+	- 다양한 보안 관련 API 집합소
+	1. 로그인 , 로그아웃
+	2. 패스워드 암호화
+	3. CSRF [ Cross Site Request Forgery ]
+	4. OAuth 2.0 [ 소셜 로그인 ]
+	5. rol[등급] 별 URL 요청 제한
+	6. 리소스 [ HTML , CSS , JS , img 등 ] 요청 제한
+	등등
+
+
+			    
+	클라이언트 -------------------------------> 디스패처 서블릿 -------------------------------> 핸들러매핑 [ Controller ]
+
+
+			    시큐리티
+	클라이언트 ------------- 필터 ------------> 디스패처 서블릿 -------------------------------> 핸들러매핑 [ Controller ]
+
+
+
+	1. 설치
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	2. 웹 실행
+	http://localhost:8080 
+
+	3. 기본 시큐리티 적용된 상태
+		아이디 : user
+		패스워드 : 콘솔 표시 패스워드 복붙 [ 예시 ] a9fe650f-88f9-46d1-9d69-627e838e08b0
+
+	[ 시큐리티 설치 하면 기본값 적용해서 홈페이지 잠김 ] 
+
+	4. 시큐리티 설정 클래스 정의 
+		1. @Configuration
+		2. extends WebSecurityConfigurerAdapter : 웹시큐리티설정 연결 클래스
+
+	5. HTTP 관련 보안 설정 오버라이딩 [ 재정의 ]
+		@Override
+    		protected void configure(HttpSecurity http) throws Exception { }
+	
+	6. 자주 사용되는 메소드
+		
+		1. csrf()		: http 로 부터 post , put 메소드 차단 
+			.igonoringAntMatchers("매핑URL") : 해당 URL post , put 메소드 사용 가능 [ 개별적인 유효성검사 필수 ]
+
+	[ 스프링 시큐리티 제공 하는 암호화 : 비크립트 ] 
+		* 해시함수와 솔트 사용하는 암호화기법
+		1.
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		2. 
+			passwordEncoder.encode("암호화 할 데이터")
+			- 암호화 할 데이터를 암호화 해서 결과데이터를 반환
+			- 동일한 데이터를 넣어도 서로 다른 암호화된 데이터를 얻을 수 있다.
+		3. 
+			passwordEncoder.matches( "암호화 하기전 데이터" , "암호화 된 데이터" );
+
+			
+
+
+
+
+
+
+
+
+

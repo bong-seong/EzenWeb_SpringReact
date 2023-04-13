@@ -1,0 +1,22 @@
+
+	HTTP : 하이버텍스트 전송 규약
+		http://localhost:8080/member?mid=qwe
+		URL : http://localhost:8080/member
+		URI : http://localhost:8080/member?mid=qwe	[ 쿼리스트링 ]
+
+		1. http : 프로토콜 [ 통신 규약 ]
+		2. localhost : ip주소 [ 네트워크 식별 번호 ]
+			1. localhost : 현재 pc만 가능
+			2. 192.168.17.34 : 특정 pc의 네트워크 식별 번호
+			3. naver.com : 특정 ip 식별변호를 문자형태 변환 [ 도메인 주소 ]
+
+		3. 포트번호 : ip주소내 프로그램 식별
+			* ip 접속시 여러개의 프로그램 존재 프로그램 식별번호 [ 톰캣 포트번호 ] 
+
+		+++++
+		헤더 [ HEADERS ] 	: http 통신 요청/응답시 정보가 보관되는 곳
+		본문 [ BODY ] 	: 전송할 데이터의 본문 [ 내용물 ]
+			POST(저장) , PUT(수정) 에서만 가능 [ * 별도로 서버설정에서 추가 가능 ]
+	
+		GET , DELETE 	: body 전송 X		@RequestParam 	쿼리스트링 O
+		POST , PUT 	: bodt 전송 O 		@RequestBody 	쿼리스트링 X
