@@ -16,8 +16,28 @@ function onSignup(){
         contentType: "application/json",
         success: ( r ) => {
             console.log( r );
-            if( r == true ) alert( '가입완료' );
+            if( r == true ) alert( '가입완료' )
+            else alert( '중복되는 아이디 입니다.');
             location.href="/";
+        }
+    })
+}
+
+
+// 2. 로그인
+function onLogin(){
+
+    let loginForm = document.querySelectorAll('.loginForm')[0];
+    let loginFormData = new FormData(loginForm);
+
+    $.ajax({
+        url: "/member/login",
+        method: "POST",
+        data: loginFormData,
+        contentType: false,
+        processData: false,
+        success: ( r ) => {
+            console.log( r );
         }
     })
 }
@@ -51,13 +71,15 @@ function getMember(){
     $.ajax({
         url: "/member/info",
         method: "GET",
+        async: false,
         success: ( r ) => {
             console.log( r ); console.log( r.mname ); console.log( r.mno );
             memberInfo = r;
             if( r.mname != null){
                 document.querySelector('.infobox').innerHTML = r.mname + '님' ;
                             document.querySelector('.infobox').innerHTML += `<a href="/member/logout"><button type="button"> 로그아웃 </button></a>
-                                                                             <a href='/member/delete?mno=${r.mno}'><button type="button"> 회원탈퇴 </button></a>`
+                                                                             `
+
 
 
             }
@@ -118,7 +140,11 @@ function findpw(){
         contentType: "application/json",
         success: ( r ) => {
             console.log( r );
-            document.querySelector('.findpw').innerHTML = '회원님의 임시비밀번호는' + r + '입니다.';
+            if( r == null){
+                alert("입력하신 정보가 올바르지 않습니다.");
+            }else{
+                document.querySelector('.findpw').innerHTML = '회원님의 임시비밀번호는' + r + '입니다.';
+            }
         }
     })
 }
@@ -135,6 +161,9 @@ function userdelete(){
         success: ( r ) => {
             if( r == true ) {
                 alert("회원탈퇴 완료")
+                getMember();
+                location.href = '/member/logout'
+
             }else {
                 alert("회원탈퇴 실패")
             }
@@ -147,18 +176,25 @@ function onupdate(){
     console.log(memberInfo.mno);
 
     let info = {
+        mno : memberInfo.mno,
         mname : document.querySelector('.umname').value,
-        mphone : document.querySelector('.umphone').value,
-        mpassword : document.querySelector('.umpassword').value
+        mphone : document.querySelector('.umphone').value
     }
 
     $.ajax({
-        url : "/member/update",
-        method: "POST",
+        url : "/member/info",
+        method: "PUT",
         data: JSON.stringify(info),
         contentType: "application/json",
         success: ( r ) => {
             console.log( r );
+            if( r == true ) {
+                alert("수정 성공")
+                location.href = '/'
+                getMember();
+            }else{
+                alert("수정 실패")
+            }
         }
     })
 

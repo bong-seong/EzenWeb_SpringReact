@@ -1,5 +1,6 @@
 package ezenweb.web.config;
 
+import ezenweb.web.controller.AuthSuccessFailHandler;
 import ezenweb.web.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired private MemberService memberService;
+    @Autowired private AuthSuccessFailHandler authSuccessFailHandler;
 
     // 인증[로그인] 관련 보안 담당 메소드
     @Override
@@ -31,6 +33,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeHttpRequests() // 인증 요청
                     .antMatchers("/member/info/mypage") // 인증시에만 사용할 URL
                         .hasRole("user") // 위 URL 패턴을 요청할수 있는 권한명
+                    .antMatchers("/member/delete") // 인증시에만 사용할 URL
+                        .hasRole("user") // 위 URL 패턴을 요청할수 있는 권한명
+                    .antMatchers("/member/update") // 인증시에만 사용할 URL
+                        .hasRole("user") // 위 URL 패턴을 요청할수 있는 권한
                     .antMatchers("/admin/**") // localhost:8080/admin/** 이하 페이지는 모두 제한
                         .hasRole("admin")
                     .antMatchers("/board/write")
@@ -50,8 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .formLogin()
                         .loginPage("/member/login") // 로그인으로 사용될 페이지의 매핑 URL
                         .loginProcessingUrl("/member/login") // 로그인을 처리할 매핑 URL
-                        .defaultSuccessUrl("/") // 로그인이 성공했을때 이동할 매핑 URL
-                        .failureUrl("/member/login") // 로그인 실패 했을때 이동할 매핑 URL
+                        // .defaultSuccessUrl("/") // 로그인이 성공했을때 이동할 매핑 URL
+                        .successHandler( authSuccessFailHandler )
+                        // failureUrl("/member/login") // 로그인 실패 했을때 이동할 매핑 URL
+                        .failureHandler( authSuccessFailHandler )
                         .usernameParameter("memail") // 로그인시 사용될 계정(아이디)의 필드명
                         .passwordParameter("mpassword") // 로그인시 사용될 계정 패스워드의 필드명
                 .and()
@@ -61,7 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .invalidateHttpSession( true ) // 세션 초기화
                 .and()
                     .oauth2Login() // 소셜 로그인 설정
-                    .defaultSuccessUrl("/") // 로그인 성공시 이동할 매핑 URL
+                    // .defaultSuccessUrl("/") // 로그인 성공시 이동할 매핑 URL
+                    .successHandler( authSuccessFailHandler )
                     .userInfoEndpoint()
                     .userService( memberService ); // oauth2 서비스를 처리할 서비스 구현
 
