@@ -38,4 +38,12 @@ public class BoardEntity {
     private List<ReplyEntity> replyEntityList = new ArrayList<>();
 
 
+    public BoardDto toDto(){
+        return BoardDto.builder()
+                .bno( this.bno )
+                .btitle( this.btitle )
+                .bcontent( this.bcontent )
+                .build();
+    }
+
 }
