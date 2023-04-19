@@ -1,0 +1,26 @@
+1. 리액트 환경 구축
+	- 프론트엔드 : 사용자와 상호작용하면서 서버로 요청/응답을 전달하는 역할
+	- 프론트엔드 언어 : html, css , js
+	- 과거형 : js는 html 안에서만 작동 [ * js 별도의 컴파일러 기능 x ] 
+	- 현재형 : Chrome V8 JavaScript 엔진 이용한 js 파일 런타임 [ 실행 ]
+	- node.js : 브라우저 밖에서 js 실행[ 언어실행 ] --> 서버 역할 가능해진다.
+	- npm : Node Package Manager / node.js 라이브라리 관레 [ 그레이들의 역할과 비슷 ]
+
+	1. node.js 설치 [ https://nodejs.org/ ]
+		1. 최신버전 설치 [ npm 포함 ]
+	2. cmd [ 명령프롬프트 ]
+		1. npm version
+		2. 확인
+			npm: '9.6.3',
+			node: '19.9.0'
+	3. 리액트 설치 [ 인텔리제이 기준 ]
+		1. 인텔리제이 하단메뉴 -> 터미널
+		2. 프로잭트네 main 폴더로 이동
+		3. main 폴더에 폴더추가 frontend
+		4. 생성된 폴더로 이동
+		5. 리액트 설치 명령어
+			npx create-react-app frontend
+			npx create-react-app 프로젝트명
+
+	
+

@@ -1,0 +1,103 @@
+
+	-- 통합 회원 [ 일반 회원 + Oauth2 ]
+	
+	스프링 OAUTH2 : 기본적으로 구글, 트위터 , 페이스북 설정 지원 [ 카카오 , 네이버 지원 x ]
+	OAUTH2 : 소셜 로그인 [ 구글 , 카카오 , 네이버 ]
+
+
+	클라이언트			애플리케이션				네이버/카카오/구글		서비스/DB
+					제작중인 홈페이지
+
+		---------- 로그인 --------->
+						------------ 토큰 요청 ----------->
+		<--------------------------------- 인증요청 -------------------------------
+					각 회사별 로그인페이지 
+
+	각 회사별 로그인
+		----------------------------------------------------------------------------> 	인증 절차 
+				
+							<------ 토큰 결과 ------
+							
+							----- 회원정보 요청 --->			------------------>
+							
+					DB 처리		<------ 회원정보 -------------------------------------------------------
+		<-------- 로그인처리 --------
+
+
+
+
+
+
+	구글 oauth2 
+	1. 구글 클라우드 플랫폼 [ https://console.cloud.google.com/ ]
+	2. 로그인
+	3. 프로젝트선택 -> 새프로젝트
+		1. 프로젝트명 : 임의 [ 아무거나 ]
+		2. 조직 : 생략
+	4. 사이드메뉴 -> API 및 서비스 -> 
+		1. oauth 동의 화면
+			1. 외부
+			다음
+			1. 앱 이름 : 아무거나
+			2. 이메일 : 본인 이메일
+			3. 연락처 : 본인 이메일
+			다음
+			1. 범위추가
+				email
+				profile ( 유저가 공개한 범위 내에서 )
+			다음
+			다음 --> 완료
+		2. 사용자 인증 정보
+			상단 + 사용자 인증벙보 만들기
+			1. 이름 : 아무거나
+			2. 승인된 리디렉션 URI
+				http://localhost:8080/login/oauth2/code/google
+			
+			완료
+			Oauth 클라이언트
+				클라이언트 ID : 1066620914686-1a1u0ln6l02o4nn36plve78jae3arquj.apps.googleusercontent.com
+				클라이언트 보안 비밀번호 : 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
+			
+		
+
+	--------------------------------------------- 개발중인 애플리케이션 신청된 oauth2 클라이언트 정보 ----------------------------------
+	1. application.properties
+
+		spring.security.oauth2.client.registration.google.client.id =1066620914686-1a1u0ln6l02o4nn36plve78jae3arquj.apps.googleusercontent.com
+		spring.security.oauth2.client.registration.google.client-secret =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
+		spring.security.oauth2.client.registration.google.scope = email,profile
+
+	2. 로그인페이지 [ 구글 로그인 버튼 ]
+
+		<a href="/oauth2/authorization/google"></a>
+	3. Oauth2 클라이언트 디펜던시 추가
+		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	4. 시큐리티  설정 클래스
+		.and()
+	                    .oauth2Login() // 소셜 로그인 설정
+             	       .defaultSuccessUrl("/") // 로그인 성공시 이동할 매핑 URL
+	                    .userInfoEndpoint(); // 스프링 시큐리티로 들어올수 있도록 시큐리티 로그인 엔드포인트 [ 종착점 ]
+		       .userService( memberService); // OAuth2UserService 커스터마이징한 서비스 대입
+
+	클라이언트 /oauth2/authorization/google -------------------- 시큐리티 체인 필터 ---------------------> 
+
+	5. OAuth2UserService 구현객체
+		1. public class MemberService implements OAuth2UserSErvice<OAuth2UserRequest , OAuth2User>
+
+		2. userRequest : 인증성공시에 대한 토큰 정보
+		3. OAuth2User oAuth2User = oAuth2UserSErvice.loadUser( userRequest ); 	: 토큰 내 유저정보
+		4. oAuth2User.getAuthorities()						: 동의항목
+		
+
+
+
+
+
+
+
+
+
+
+
+

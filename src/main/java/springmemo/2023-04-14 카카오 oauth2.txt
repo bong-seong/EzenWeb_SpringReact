@@ -1,0 +1,17 @@
+카카오 로그인
+	- 활성화 설정 ON
+	- Redirect URI
+	http://localhost:8080/login/oauth2/code/kakao
+	
+	- 동의항목
+	profile_nickname , account_email
+
+	- 보안	
+	Client Secret : Y8T9hvsJBsacnNhDEymMudbKwlJOZPfN
+
+	-고급
+	카카오 로그아웃 리다이렉트 URI
+	http://localhost:8080/logout
+
+	요약정보
+		REST API 키 : b70c111fc65940570f0f2a2e357ab45c
