@@ -16,6 +16,16 @@ public class BoardDto {
     private int cno;
     private String cname;
 
+    // 추가 ( 작성자 회원정보 )
+    private int mno;
+    private String memail;
+    // 작성일
+    private String bdate;
+    // 조회수
+    private int bview;
+
+
+
     // Entity 변환 메소드
     // 1. toCategoryEntity
     public CategoryEntity toCategoryEntity() {
