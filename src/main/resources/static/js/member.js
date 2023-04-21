@@ -77,7 +77,7 @@ function getMember(){
             memberInfo = r;
             if( r.mname != null){
                 document.querySelector('.infobox').innerHTML = r.mname + '님' ;
-                            document.querySelector('.infobox').innerHTML += `<a href="/member/logout"><button type="button"> 로그아웃 </button></a>
+                document.querySelector('.infobox').innerHTML += `<a href="/member/logout"><button type="button"> 로그아웃 </button></a>
                                                                              `
 
 

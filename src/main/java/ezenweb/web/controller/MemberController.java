@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController // @Controller + @ResponseBody
 @Slf4j // 로그 기능 주입
 @RequestMapping("/member")
+@CrossOrigin( origins = "http://localhost:3000")
 public class MemberController {
 
     /*

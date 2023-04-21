@@ -43,8 +43,8 @@ public class MemberEntity extends BaseTime {
                 .mname( this.mname )
                 .mpassword( this.mpassword )
                 .mphone( this.mphone )
-                .cdate( this.cdate )
-                .udate( this.udate )
+                .cdate( this.cdate.toString() )
+                .udate( this.udate.toString() )
                 .build();
     }
 

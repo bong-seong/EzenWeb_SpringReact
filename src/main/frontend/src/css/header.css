@@ -1,0 +1,13 @@
+* { margin:0px; padding:0px;}
+a{ text-decoration: none; color: black; }
+
+.menu_box{
+    background-color: orange;
+    height: 30px;
+    text-align: right;
+}
+.menu_box a {
+    margin-right : 10px;
+    font-size: 13px;
+    font-weight: bold;
+}
