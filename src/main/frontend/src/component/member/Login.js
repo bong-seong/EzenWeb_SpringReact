@@ -19,7 +19,15 @@ export default function Login( props ) {
                     alert( '동일한 회원정보가 존재하지 않습니다.' );
                 }else{
                     alert('로그인성공')
-                    // JS 로컬 스토리지에 로그인 성공한 흔적 남기기
+                    // JS 로컬 스토리지[ 브라우저 모두 닫혀도 사라지지 않는다. , 도메인마다 따로 저장 된다 ] 에 로그인 성공한 흔적 남기기
+                    // localStorage.setItem("key", value ) // key · value : String 타입
+                    // value 에 객체 대입시 [Object] ????? 객체처럼 사용 불가
+                    // JSON.stringfy( 객체 ) : 해당 객체를 String 타입의 json 형식으로 변환
+                    // 다시 꺼내서 사용할때는 JSON.parse( 객체 )
+                    // localStorage.setItem("login_token" , JSON.stringify( r.data ) );
+                    // JS 세션스토리지 [ 브라우저 모두 닫히면 사라진다. ]
+                    sessionStorage.setItem("login_token" , JSON.stringify( r.data ) );
+
                     window.location.href="/";
                 }
             })
@@ -37,7 +45,6 @@ export default function Login( props ) {
         })
         */
     }
-
 
     return (<>
         <h3> 로그인 페이지 입니다. </h3>

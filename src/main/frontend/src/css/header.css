@@ -2,12 +2,12 @@
 a{ text-decoration: none; color: black; }
 
 .menu_box{
-    background-color: orange;
+    background-color: #ffad16;
     height: 30px;
-    text-align: right;
 }
 .menu_box a {
-    margin-right : 10px;
+    margin-left: 10px;
     font-size: 13px;
     font-weight: bold;
+    color: white;
 }
