@@ -11,6 +11,8 @@ import Clock from './example/ex1component/Clock';
 import Comment from './example/ex2css/Comment';
 import CommentList from './example/ex2css/CommentList';
 import AppTodo from './example/exbook/AppTodo';
+import Hook1 from './example/ex3hook/Hook1';
+import Hook2 from './example/ex3hook/Hook2';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 /*
@@ -61,12 +63,30 @@ root.render(
 );
 */
 
+
 // 6. 교재 Todo 적용
 root.render(
     <React.StrictMode>
         <AppTodo />
     </React.StrictMode>
 );
+
+
+/*
+root.render(
+    <React.StrictMode>
+        <Hook1 />
+    </React.StrictMode>
+);
+*/
+
+/*
+root.render(
+    // <React.StrictMode> // 예외처리 /경고/검사
+        <Hook2 />
+    // </React.StrictMode>
+);
+*/
 
 /* 기본값
 // 1. HTML에 존재하는 div 가져오기

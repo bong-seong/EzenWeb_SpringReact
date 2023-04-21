@@ -1,0 +1,90 @@
+
+	1. package.json
+		1. 메타데이터
+		2. 패키지목록 [ 디펜던시 ] 등 포함
+			node_modules 안에 설치 한다.
+	2. package-lock.json
+		1. 어느 환경에서든 동일한 버전 패키지를 설치하기 위한고정값
+	---------------------
+	리액트 프로젝트 깃 관리
+		1. node_modules 폴더는 깃 commit 제외
+		2. npm update 명령어를 이용한 package.json의 디펜던시 목록의 라이브러리 재 설치
+		3. node_modules 폴더는 재생성
+
+	1. public 폴더
+		1. index.html : 
+			- 리액트환경에서 html 무조건 하나만 존재!!
+			- 다른페이지는 react.js통해 생성하고 root 엘리먼트[태그] 아래에 동적으로 렌더링
+
+	2. src 폴더
+		1. index.js
+			- 리액트 환경에서 index.html 과 처음으로 실행되는 js 파일
+			- root 아래 추가
+		2. app.js
+			- 기본으로 생성된 리액트 컴포넌트
+
+
+	브라우저 -------------------------------------> 서버
+		HTTP GET http://localhost:3000
+		<------------------------------------
+                    		   index.html
+
+	HTML : Hypertext Markup Language 
+
+	java	> springboot 	java  
+	html/css/js > react
+
+	1. 파싱
+		1. 브라우저는 HTML을 트리 자료구조의 형태인 DOM 트리로 변환
+			DOM( 문서 객체 모델 ) document : dom 객체
+			ex) document.querySelector
+		2. img,css,js 파일들의 리로스를 다운로드
+			특히 css 는 다운로드후 CSSOM 트리로 반환
+		3. 다운로드된 js 실행
+
+	2. 렌더링 : 코드 [ html dom + css cssom ] 를 화면에 출력하는 과정
+		1. [ html ] DOM + [ css스타일 ] CSSOM = 렌더트리
+
+	마크업[ 태그 ] : div , html , a , span
+	HTML 요소 [ 엘리먼트 ] : 마크업 시작과 끝 내용이 포함된 전체 구역 
+	<div></div>
+
+p.177
+
+	React 렌더링 되는 과정 [ SPA ]
+	1. npm start 라이브러리가 리액트 실행시 bundle.js 파일을 index.js 포함
+	2. index.html 열린다. 깡통
+		<div id="root"></div>
+	3. index.js 실행
+		컴포넌트 [ 함수 ] 렌더링 [ bundle.js -> ReactDom.render() ] 과정이 이루어진다 
+	4. App.js [ 컴포넌트 ]
+
+	HTML + JAVA => JSP
+	HTML + JS => JSX
+		JSX 작성된 코드 -------> Babel 라이브러리 통해 자바스크립트로 번역
+
+	ReactDom.render
+		1. bundle.js 포함된 함수 [ npm start 라이브러리 ]
+		2. index.html에 <div id="root"></div> 엘리멘트에 컴포넌트를 렌더링 역할
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	

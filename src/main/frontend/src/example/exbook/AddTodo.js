@@ -1,5 +1,6 @@
 import React , { useState } from 'react';
 import { Button , Grid , TextField } from '@mui/material';
+import axios from 'axios';
 
 export default function AddTodo( props ) {
 
@@ -17,14 +18,21 @@ export default function AddTodo( props ) {
         console.log( item );
     }
 
-
-    // 2. AppTodo 로 부터 전달받은 함수
-    const addItem = props.addItem;
+   // 2. AppTodo 로 부터 전달받은 함수
+   const addItem = props.addItem;
 
    // 3. + 버튼을 클릭했을때
    const onButtonClick = () => {
+        /*
+       axios.post( "http://192.168.17.34:8080/todo" , item )
+                           .then( r => {
+                               console.log( r );
+                           });
+       */
+
        addItem( item ); // 입력받은 데이터를 AppTodo 컴포넌트 한테 전달받은 함수의 매개변수 대입
-       setItem( { "title" : "" }); // 상태변수 초기화
+
+       setItem( { "title" : "" } ); // 상태변수 초기화
    }
 
    // 4. 엔터를 입력했을때
@@ -34,7 +42,7 @@ export default function AddTodo( props ) {
         }
    }
 
-    return ( <>
+   return ( <>
         <Grid container style={{ marginTop : 20 }}>
             <Grid xs={11} md={11} item style={{ paddingRight : 16 }}>
                 <TextField
@@ -57,5 +65,5 @@ export default function AddTodo( props ) {
                 </Button>
             </Grid>
         </Grid>
-    </> );
+   </> );
 }
