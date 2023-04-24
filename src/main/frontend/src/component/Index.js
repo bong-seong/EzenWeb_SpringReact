@@ -5,6 +5,11 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import Signup from './member/Signup';
+import Find from './member/Find';
+import List from './board/List';
+import Write from './board/Write';
+import DashBoard from './admin/DashBoard';
+
 
 
 /*
@@ -26,8 +31,12 @@ export default function Index( props ){
 
             <Routes>
                 <Route path="/" element={ <Main /> } />
-                <Route path="login" element={ <Login /> } />
-                <Route path="signup" element={ <Signup /> } />
+                <Route path="/member/login" element={ <Login /> } />
+                <Route path="/member/signup" element={ <Signup /> } />
+                <Route path="/member/find" element={ <Find /> } />
+                <Route path="/board/list" element={ <List /> } />
+                <Route path="/admin/dashboard" element={ <DashBoard /> } />
+                <Route path="/board/write" element={ <Write /> } />
             </Routes>
 
             <Footer />
@@ -35,3 +44,4 @@ export default function Index( props ){
          </BrowserRouter>
     </>);
 }
+

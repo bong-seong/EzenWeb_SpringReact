@@ -18,6 +18,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -223,6 +225,20 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         // Optional<MemberEntity> entityOptional = memberEntityRepository.findById( mno );
         return false;
     }
+    
+    // 5. 아이디 중복 확인
+    public boolean idcheck( String memail ){
+        log.info("service member idcheck : " + memail );
+        return memberEntityRepository.existsByMemail( memail );
+    }
+
+    // 6. 전화번호 중복 확인
+    public boolean phonecheck( String mphone ){
+        log.info("service member phonecheck : " + mphone );
+        return memberEntityRepository.existsByMphone( mphone );
+    }
+
+    
 
     // [ 스프링 시큐리티 적용했을때 사용되는 메소드 ]
     @Override

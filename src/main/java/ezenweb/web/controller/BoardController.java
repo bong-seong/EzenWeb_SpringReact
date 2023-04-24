@@ -2,6 +2,7 @@ package ezenweb.web.controller;
 
 
 import ezenweb.web.domain.board.BoardDto;
+import ezenweb.web.domain.board.CategoryDto;
 import ezenweb.web.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/board")
+@CrossOrigin( origins = "http://localhost:3000")
 public class BoardController {
 
     // 서비스 객체들
@@ -39,7 +41,7 @@ public class BoardController {
         // List : { 값 ,값 , 값 , 값 }
         // Map : { 키 : 값 , 키 : 값 , 키 : 값 } ---> JSON [ object ]
     @GetMapping("/category/list")
-    public Map<Integer , String> categoryList() {
+    public List<CategoryDto> categoryList() {
         return boardService.categoryList();
     }
 

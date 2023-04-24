@@ -24,9 +24,16 @@ export default function Header( props ){
         <div className="header_wrap">
             <div className="menu_box">
                 <a href="/"> Home </a>
+                <a href="/board/list"> 게시판 </a>
+                <a href="/admin/dashboard"> 관리자 </a>
                 { login == null
-                    ? ( <> <a href="/login"> 로그인 </a> <a href="/signup"> 회원가입 </a> </> )
-                    : ( <> <button onClick={ logOut }> 로그아웃 </button> </> )
+                    ? ( <>
+                        <a href="/member/login"> 로그인 </a>
+                        <a href="/member/signup"> 회원가입 </a>
+                    </> )
+                    : ( <>
+                        <button onClick={ logOut }> 로그아웃 </button>
+                    </> )
                 }
             </div>
         </div>

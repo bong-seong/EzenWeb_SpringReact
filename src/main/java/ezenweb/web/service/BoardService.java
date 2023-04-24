@@ -38,16 +38,16 @@ public class BoardService {
 
     // 4. 모든 카테고리 출력
     @Transactional
-    public Map<Integer,String> categoryList() {
+    public List<CategoryDto> categoryList() {
 
         List<CategoryEntity> categoryEntityList = categoryEntityRepository.findAll();
 
-        Map<Integer,String> map = new HashMap<>();
+        List<CategoryDto> list = new ArrayList<>();
         // 1. 형변환 List<엔티티> ---> MAP
         categoryEntityList.forEach( (e) -> {
-            map.put( e.getCno(), e.getCname() );
+            list.add( new CategoryDto( e.getCno() , e.getCname() ) );
         });
-        return map;
+        return list;
     }
 
     // 2. 게시물 쓰기

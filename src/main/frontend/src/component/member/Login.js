@@ -58,7 +58,9 @@ export default function Login( props ) {
                     <tr>
                         <td> 비밀번호 :  </td><td> <input type="password" name="mpassword" className="mpassword" /> </td>
                     </tr>
-
+                    <tr>
+                        <td colSpan="2"> <a href="/member/find"> 아아디 / 비밀번호 찾기 </a> </td>
+                    </tr>
                     <tr>
                         <td colSpan="2"> <button type="button" onClick={ onLogin }> 로그인 </button> </td>
                     </tr>

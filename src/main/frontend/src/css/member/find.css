@@ -1,0 +1,25 @@
+.find-mainBox{
+    border : solid 1px black;
+    width: 80%;
+    margin: 0 auto;
+}
+.tab-box{
+    display: flex;
+}
+.tab-menu{
+    background-color: #ffad16;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white;
+    font-size: 12px;
+    width: 100px;
+    text-align: center;
+    padding: 5px;
+}
+.tab-menu-none-selected{
+    background-color: gray !important;
+}
+
+.findPW{
+    display : none;
+}

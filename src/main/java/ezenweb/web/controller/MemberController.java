@@ -89,6 +89,19 @@ public class MemberController {
         return result;
     }
 
+    // 5. 아이디 중복체크
+    @GetMapping("/idcheck")
+    public boolean idcheck( @RequestParam String memail ){
+        log.info("member idcheck : " + memail );
+        return memberService.idcheck( memail );
+    }
+    // 5. 아이디 중복체크
+    @GetMapping("/phonecheck")
+    public boolean phonecheck( @RequestParam String mphone ){
+        log.info("member phonecheck : " + mphone );
+        return memberService.phonecheck( mphone );
+    }
+
     // ------------ 스프링 시큐리티 적용될 경우 아래코드는 사용 X ------------
 
     /*

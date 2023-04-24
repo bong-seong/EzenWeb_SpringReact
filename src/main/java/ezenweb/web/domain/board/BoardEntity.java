@@ -68,7 +68,7 @@ public class BoardEntity extends BaseTime {
                 .bdate(
                         // 삼항 연산자 [ 조건 ? 참 : 거짓 ]
                         // 만약에 작성 날짜/시간중 날짜가 현재 날짜와 동일하면
-                        this.cdate.toLocalDate().toString().equals( LocalDateTime.now().toString() ) ?
+                        this.cdate.toLocalDate().toString().equals( LocalDateTime.now().toLocalDate().toString() ) ?
                                 this.cdate.toLocalTime().format( DateTimeFormatter.ofPattern( "HH:mm:ss") ) :
                                 this.cdate.toLocalDate().format( DateTimeFormatter.ofPattern( "yyyy-MM-dd" ) )
                 )
