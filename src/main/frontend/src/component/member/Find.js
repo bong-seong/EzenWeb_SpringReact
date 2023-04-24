@@ -1,5 +1,6 @@
 import React , { useState , useEffect }from 'react';
 import styles from '../../css/member/find.css';
+import { Container , Box , TextField , Button } from '@mui/material';
 import axios from 'axios';
 
 
@@ -12,8 +13,8 @@ export default function Find( props) {
         console.log("findid 실행");
 
         let info ={
-            mname : document.querySelector('.mname').value,
-            mphone : document.querySelector('.mphone').value
+            mname : document.querySelector('#mname').value,
+            mphone : document.querySelector('#mphone').value
         }
 
         console.log( info );
@@ -33,8 +34,8 @@ export default function Find( props) {
         console.log("findpw 실행");
 
         let info ={
-            memail : document.querySelector('.memail').value,
-            mphone : document.querySelector('.mphone').value
+            memail : document.querySelector('#memail').value,
+            mphone : document.querySelector('#mphone').value
         }
 
         axios.post("http://localhost:8080/member/findpw", info)
@@ -51,7 +52,6 @@ export default function Find( props) {
     let selectYN = false;
 
     const selectTab = () => {
-
         if( selectYN ){
             document.querySelector('.findPW').style.display = 'none';
             document.querySelector('.findID').style.display = 'block';
@@ -68,49 +68,33 @@ export default function Find( props) {
     }
 
     return (<>
-        회원정보찾기 [ 아이디 / 비밀번호 ]
-
-        <div className="find-mainBox">
-            <div className="tab-box">
-                <div className="tab-menu ID-BOX" onClick={ selectTab }>
-                    아이디찾기
+        <Container>
+            <div className="find-mainBox">
+            <h3 className="pageTitle"> 회원정보찾기 [ 아이디 / 비밀번호 ] </h3>
+                <div className="tab-box">
+                    <div className="tab-menu ID-BOX" onClick={ selectTab }>
+                        아이디찾기
+                    </div>
+                    <div className="tab-menu PW-BOX tab-menu-none-selected" onClick={ selectTab }>
+                        비밀번호찾기
+                    </div>
                 </div>
-                <div className="tab-menu PW-BOX tab-menu-none-selected" onClick={ selectTab }>
-                    비밀번호찾기
+                <div className="inputBox">
+                    <div className="findID">
+                        <TextField fullWidth className="mname" id="mname" label="이름" variant="standard" />
+                        <TextField fullWidth className="mphone" id="mphone" label="전화번호" variant="standard" />
+                        <Button fullWidth variant="outlined" onClick={ findID } className="findBtn"> 아이디찾기 </Button>
+                        <div className="returnBox"> { returnID } </div>
+                    </div>
+
+                    <div className="findPW">
+                        <TextField fullWidth className="memail" id="memail" label="아이디/이메일" variant="standard" />
+                        <TextField fullWidth className="mphone" id="mphone" label="전화번호" variant="standard" />
+                        <Button fullWidth variant="outlined" onClick={ findPW } className="findBtn"> 비밀번호찾기 </Button>
+                        <div className="returnBox"> { returnPW } </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <div className="findID">
-                    <table>
-                      <tr>
-                        <td> 이름 : </td> <td> <input type="text" name="mname" className="mname" /> </td>
-                      </tr>
-                      <tr>
-                        <td> 전화번호 :  </td> <td> <input type="text" name="mphone" className="mphone" /> </td>
-                      </tr>
-                      <tr>
-                        <td colSpan="2"> <button type="button" onClick={ findID }> 아이디찾기 </button> </td>
-                      </tr>
-                    </table>
-                    <div> { returnID } </div>
-                </div>
-
-                <div className="findPW">
-                    <table>
-                        <tr>
-                            <td>아이디[이메일] : </td> <td> <input type="text" name="memail" className="memail" /> </td>
-                        </tr>
-                        <tr>
-                            <td> 전화번호 :  </td> <td> <input type="text" name="mphone" className="mphone" /> </td>
-                        </tr>
-                        <tr>
-                            <td colSpan="2"> <button type="button" onClick={ findPW }> 비밀번호찾기 </button> </td>
-                        </tr>
-                        <div> { returnPW } </div>
-                    </table>
-                </div>
-            </div>
-        </div>
-
+        </Container>
     </>);
 }

@@ -1,10 +1,12 @@
 import React , { useState , useEffect } from 'react';
 import axios from 'axios';
 
+import { Container , Box , TextField , Button } from '@mui/material';
+
 export default function Signup(props) {
 
-    let [ memailMsg , setMemailMsg ] = useState({});
-    let [ mphoneMsg , setMphoneMsg ] = useState({});
+    let [ memailMsg , setMemailMsg ] = useState( {} );
+    let [ mphoneMsg , setMphoneMsg ] = useState( {} );
 
     // 2. 아이디 중복체크
     const idCheck = (e) => {
@@ -14,9 +16,9 @@ export default function Signup(props) {
             .then( r => {
                 console.log( r );
                 if( r.data == true ){
-                    setMemailMsg({ msg : '사용중인 아이디 입니다.' , yn : false } );
+                    setMemailMsg( { msg : '사용중인 아이디 입니다.' , yn : false } );
                 }else{
-                    setMemailMsg({ msg : '사용 가능한 이메일입니다.' , yn : true } );
+                    setMemailMsg( { msg : '사용 가능한 이메일입니다.' , yn : true } );
                 }
             })
             .catch( err => { console.log(err) } );
@@ -35,7 +37,7 @@ export default function Signup(props) {
                     setMphoneMsg( { msg : '사용 가능한 전화번호입니다.' , yn : true } );
                 }
             })
-            .catch( err => { console.log(err) } );
+        .catch( err => { console.log(err) } );
     }
 
     // 1. 회원가입
@@ -75,30 +77,32 @@ export default function Signup(props) {
     }
 
     return(<>
-        <h3> 회원가입 페이지 </h3>
-          <form>
-              <table>
-                    <tbody>
-                          <tr>
-                            <td>아이디[이메일] : </td> <td> <input type="text" name="memail" className="memail" onChange={ idCheck }/> </td>
-                            <span> { memailMsg.msg } </span>
-                          </tr>
-                          <tr>
-                              <td> 이름 : </td> <td> <input type="text" name="mname" className="mname" /> </td>
-                          </tr>
-                          <tr>
-                              <td> 비밀번호 :  </td><td> <input type="password" name="mpassword" className="mpassword" /> </td>
-                          </tr>
-                          <tr>
-                              <td> 전화번호 :  </td> <td> <input type="text" name="mphone" className="mphone" onChange={ phoneCheck } /> </td>
-                              <span> { mphoneMsg.msg } </span>
-                          </tr>
-                          <tr>
-                              <td colSpan="2"> <button type="button" onClick={ onSignup }> 가입 </button> </td>
-                          </tr>
-                    </tbody>
-              </table>
-          </form>
+        <Container>
+            <h3> 회원가입 페이지 </h3>
+              <form>
+                  <table>
+                        <tbody>
+                              <tr>
+                                <td>아이디[이메일] : </td> <td> <input type="text" name="memail" className="memail" onChange={ idCheck }/> </td>
+                                <span> { memailMsg.msg } </span>
+                              </tr>
+                              <tr>
+                                  <td> 이름 : </td> <td> <input type="text" name="mname" className="mname" /> </td>
+                              </tr>
+                              <tr>
+                                  <td> 비밀번호 :  </td><td> <input type="password" name="mpassword" className="mpassword" /> </td>
+                              </tr>
+                              <tr>
+                                  <td> 전화번호 :  </td> <td> <input type="text" name="mphone" className="mphone" onChange={ phoneCheck } /> </td>
+                                  <span> { mphoneMsg.msg } </span>
+                              </tr>
+                              <tr>
+                                  <td colSpan="2"> <button type="button" onClick={ onSignup }> 가입 </button> </td>
+                              </tr>
+                        </tbody>
+                  </table>
+              </form>
+        </Container>
     </>);
 }
 

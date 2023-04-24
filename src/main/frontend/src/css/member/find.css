@@ -1,10 +1,21 @@
 .find-mainBox{
-    border : solid 1px black;
-    width: 80%;
+    width: 40%;
     margin: 0 auto;
 }
+
+.pageTitle{
+    margin: 100px 0px;
+}
+
 .tab-box{
     display: flex;
+    padding-bottom : 20px;
+}
+
+.findBtn{
+    margin-top: 30px !important;
+    color : #ffad16 !important;
+    border-color : #ffad16 !important;
 }
 .tab-menu{
     background-color: #ffad16;
@@ -22,4 +33,9 @@
 
 .findPW{
     display : none;
+}
+
+.returnBox{
+    font-size : 13px;
+    margin-top : 20px;
 }

@@ -172,8 +172,6 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
             return true;
         }
 
-
-
         // 3.
         boolean result = memberEntityRepository.existsByMemailAndMpassword( memberDto.getMemail() , memberDto.getMpassword() );
         if( result ){

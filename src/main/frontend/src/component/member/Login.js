@@ -1,6 +1,7 @@
 import React , { useState , useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../css/member/login.css';
+import { Container , Box , TextField , Button } from '@mui/material';
 
 export default function Login( props ) {
 
@@ -49,6 +50,8 @@ export default function Login( props ) {
     return (<>
         <h3> 로그인 페이지 입니다. </h3>
         <form className="loginForm">
+            <TextField fullWidth className="mname" id="mname" label="이름" variant="standard" />
+            <TextField fullWidth className="mname" id="mname" label="이름" variant="standard" />
             <table>
                 <tbody>
                     <tr>
