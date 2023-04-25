@@ -8,10 +8,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 
+// @CrossOrigin( origins = "http://localhost:3000")
 @RestController // @Controller + @ResponseBody
 @Slf4j // 로그 기능 주입
 @RequestMapping("/member")
-@CrossOrigin( origins = "http://localhost:3000")
 public class MemberController {
 
     /*

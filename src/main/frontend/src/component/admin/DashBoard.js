@@ -9,7 +9,7 @@ export default function DashBoard( props ) {
 
         let cname = document.querySelector(".cname");
 
-        axios.post("http://localhost:8080/board/category/write", { "cname" : cname.value })
+        axios.post("/board/category/write", { "cname" : cname.value })
             .then( (r) => {
                 console.log( r );
                 if( r.data == true ){

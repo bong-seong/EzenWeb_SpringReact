@@ -13,7 +13,7 @@ export default function CategoryList( props ){
     let [ list , setList ] = useState( [] );
 
     useEffect( ()=> {
-            axios.get("http://localhost:8080/board/category/list")
+            axios.get("/board/category/list")
                 .then( r => {
                     console.log( r.data );
                     setList( r.data );

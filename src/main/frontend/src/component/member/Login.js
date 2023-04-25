@@ -13,7 +13,7 @@ export default function Login( props ) {
         let loginForm = document.querySelectorAll('.loginForm')[0];
         let loginFormData = new FormData( loginForm );
 
-        axios.post("http://localhost:8080/member/login", loginFormData )
+        axios.post("/member/login", loginFormData )
             .then( r => {
                 console.log( r );
                 if( r.data == false) {

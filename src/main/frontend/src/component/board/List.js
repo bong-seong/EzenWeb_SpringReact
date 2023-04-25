@@ -23,7 +23,7 @@ export default function List( props ){
     // 2. 서버에게 요청하기 [ 컴포넌트가 처음 생성되었을때 ]
     // useEffect( ()=> {} , [] ) vs useEffect( ()=> {} )
     useEffect( () => {
-        axios.get('http://localhost:8080/board/list', { params: { cno : cno } } )
+        axios.get('/board/list', { params: { cno : cno } } )
             .then( r => {
                 console.log(r);
                 setRows( r.data );

@@ -12,7 +12,7 @@ export default function Signup(props) {
     const idCheck = (e) => {
         // 1. console.log( document.querySelector('.memail').value );
         // 2. console.log( e.target.value )
-        axios.get("http://localhost:8080/member/idcheck" , { params : { memail : e.target.value } } )
+        axios.get("/member/idcheck" , { params : { memail : e.target.value } } )
             .then( r => {
                 console.log( r );
                 if( r.data == true ){
@@ -28,7 +28,7 @@ export default function Signup(props) {
     const phoneCheck = (e) => {
         // 1. console.log( document.querySelector('.memail').value );
         // 2. console.log( e.target.value )
-        axios.get("http://localhost:8080/member/phonecheck" , { params : { mphone : e.target.value } } )
+        axios.get("/member/phonecheck" , { params : { mphone : e.target.value } } )
             .then( r => {
                 console.log( r );
                 if( r.data == true ){
@@ -60,7 +60,7 @@ export default function Signup(props) {
             console.log( info )
 
             // ajax --> axios 변환
-            axios.post("http://localhost:8080/member/info" , info )
+            axios.post("/member/info" , info )
                 .then( r => {
                     console.log( r);
                     if( r.data == true ) {

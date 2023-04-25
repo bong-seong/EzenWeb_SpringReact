@@ -13,21 +13,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+// @CrossOrigin( origins = "http://localhost:3000")
+
 @Slf4j
 @RestController
 @RequestMapping("/board")
-@CrossOrigin( origins = "http://localhost:3000")
 public class BoardController {
 
     // 서비스 객체들
     @Autowired
     private BoardService boardService;
+
+    /*
     // -------------------------------- view 반환 ---------------------------------- //
     @GetMapping("")
     public Resource index(){
         return new ClassPathResource("templates/board/list.html");
     }
-
+    */
 
     // -------------------------------- model 반환 ---------------------------------- //
     // 1. 카테고리 등록
@@ -38,7 +41,7 @@ public class BoardController {
     }
 
     // 4. 카테고리 출력 [ 반환타입 : { cno : cname , 1 : 공지사항 , 2 : 자유게시판 }
-        // List : { 값 ,값 , 값 , 값 }
+        // List : { 값 , 값 , 값 , 값 }
         // Map : { 키 : 값 , 키 : 값 , 키 : 값 } ---> JSON [ object ]
     @GetMapping("/category/list")
     public List<CategoryDto> categoryList() {

@@ -1,0 +1,30 @@
+스프링 , 리액트 통합개발
+	1. 라우터
+		서버 사이드 라우팅 [ 클라이언트가 서버에게 페이지 요청 ] -> JSP 방식
+		클라이언트 사이드 라우팅 [ 클라이언트가 모든 페이지 [ 컴포넌트 ] 가지고 있음 ]
+		- 서버에게 요청할 필요없이 빠르게 [ 페이지 ] 컴포넌트 전환 가능
+		- 클라이언트 실행시 모든 JS [ 컴포넌트 ] 가지고 있음 --> 첫 로딩 길다.
+		
+		<BrowserRouter>					: URL 동기화 [ 가상 URL 관리 ]
+		<Routes>					: 요청된 URL의 적합한 라우터 찾아주는 역할
+		<Route path="가상URL" element={ <컴포넌트명 /> } /> 	: 라우터 만들기
+	
+	2. JS쿠키 / 세션 [ 저장소 ] 
+		- 도메인 마다 다른곳에 저장된다.
+		1. 쿠키 [ 로컬 스토리지 ]
+			브라우저 [크롬] 닫혀도 사라지지 않는다. [ 로그인 상태 유지 = 자동 로그인 기능 ]
+			localStorage.setItem('키' , 데이터);
+			localStorage.getImte('키');
+		2. 세션 [ 세션 스토리지 ]
+			브라우저 [크롬] 닫히면 사라진다.
+			sessionStorage.setItem('키', 데이터);
+			sessionStrorage.getItem('키');
+
+		3. 형변환 [ 데이터 기본 형식은 문자 ]
+			- 객체 저장시 형변환 필수 !!!!!!!	
+			1. JSON.stringify( 객체 ) 			: 문자열 타입의 JSON 형식
+			sessionStorage.setItem('키' , JSON.stringify( 객체 ) ); 
+
+			2. JSON.parse( JSON형식의 문자열)		: 문자열 타입을 JSON 타입으로 변환			
+			JSON.parse( sessionStorage.getItem('키) ) ;
+

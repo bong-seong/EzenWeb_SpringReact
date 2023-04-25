@@ -1,0 +1,115 @@
+
+	useState
+		- 리액트 훅 [ 라이브러리 집합 ] 중 하나의 함수
+		1. import React , { useState } from 'react';
+		2. useState( 변수에 저장할 초기값 )	: [ 필드명 , set필드함수 ] 반환
+
+		* 상태관리변수 vs 일반변수 차이점
+		- 1. 선언
+			const [ readOnly , setReadOnly ] = useState( true );
+				vs
+			let readOnly = true ;
+
+		- 2. 수정
+			setReadOnly( false ) ;
+				vs
+			readOnly = false;
+
+		- 3. 기능차이
+			해당 컴포넌트가 재 렌더링 !!!
+				vs
+			아무런 기능 없다.
+		
+		- 4. 
+			상태관리변수 : 변수가 변경되었을때 화면에도 실시간으로 재 렌더링이 필요 할 경우
+			변수 : 변수가 변경 되었을때 화면에도 실시간으로 재 렌더링[ 화면 표시 ] 안할경우 
+
+	4. mui [ css,js 적용된 컴포넌트 제공 ] 라이브러리
+
+	5. useEffect()
+		1. 생명주기에 따라 이벤트 동작
+		생명주기 : 생성mount 업데이트update 제거unmount
+		
+		2. 문법
+			useEffect( () => { return() => { } } , [ 의존성배열 ] )
+
+			1. mount , update 될때 실행되는 이벤트 함수
+				useEffect( () => { } )
+
+			2. mout 될때 1번 실행되는 이벤트 함수
+				useEffect( () => { } , [ ] )
+
+			3. mout 될때 1번, 특정 성태변수가 update 될때 실행되는 이벤트 함수
+				useEffect( () => { } , [ 상태변수 ] )
+
+			4. return() => { } 		mount시 실행 X		
+
+	--------------------------------------------------------------------------------------------------------
+	CORS 정책 : 웹 보안 방침
+		1. 요청하려는 도메인과 제공하려는 도메인 다를경우 정책 위반
+		2. 해결책 : CORS [ 교차 출처 리소스 공유 ]
+			처음 리소스를 제공한 도메인이 현재 요청하려는 도메인과 다르더라도 요청을 허락
+
+
+					프론트엔드 localhost:3000	
+
+
+	브라우저
+	localhost:3000
+	index.html
+							
+
+					백엔드 localhost:8080
+
+
+	---------------------------------------------------------------------------------------------------------
+	
+		axios 설치
+			npm install axios
+
+
+		ajax({
+			url : "url",
+			method: "get",
+			data : { },
+			success : response => { }	
+		)}
+			vs
+
+		axios.get( "url" ,data , header )
+			.then(  response => { } ) 	: 성공했을때 응답받은 데이터
+			.catch( err => { } ) 		: 에러 발생했을때 메시지 받기 
+
+		1. 데이터 [ data ] 전송 방법
+
+		1. GET 		--------------------> @RequestParam / 쿼리스트링 방식
+			axios.get( "URL" , { paramas : 객체 } )
+			axios.get( "URL" , { paramas : { 키:값 , 키:값 } )
+
+
+		2. POST		--------------------> @RequestBody / 본문 [ body ] 방식 ( JSON 형식 )
+			axios.post( "URL" , 객체 )
+			axios.post( "URL" , { 키:값 , 키:값 } )
+
+
+		3. PUT		--------------------> @RequestBody / 본문 [ body ] 방식 ( JSON 형식 )
+			axios.post( "URL" , 객체 )
+			axios.post( "URL" , { 키:값 , 키:값 } )
+
+
+		4. DELETE		--------------------> @RequestParam / 쿼리스트링 방식
+			axios.get( "URL" , { params : 객체 } )
+			axios.get( "URL" , { params : { 키:값 , 키:값 } )	
+
+
+
+
+
+
+
+
+
+
+
+
+

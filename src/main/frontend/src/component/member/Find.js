@@ -19,7 +19,7 @@ export default function Find( props) {
 
         console.log( info );
 
-        axios.post("http://localhost:8080/member/findid" , info)
+        axios.post("/member/findid" , info)
             .then( r => {
                 console.log(r);
                 if( r.data != "") {
@@ -38,7 +38,7 @@ export default function Find( props) {
             mphone : document.querySelector('#mphone').value
         }
 
-        axios.post("http://localhost:8080/member/findpw", info)
+        axios.post("/member/findpw", info)
             .then( r => {
                 console.log( r );
                 if( r.data == '') {
