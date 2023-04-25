@@ -3,6 +3,7 @@ package ezenweb.web.controller;
 
 import ezenweb.web.domain.board.BoardDto;
 import ezenweb.web.domain.board.CategoryDto;
+import ezenweb.web.domain.board.PageDto;
 import ezenweb.web.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,17 +50,29 @@ public class BoardController {
     }
 
     // 2. 게시물 쓰기 // 요청받은 JSON 필드명과 DTO 필드명 일치해야함
-    @PostMapping("/write")
+    @PostMapping("")
     public byte boardWrite (@RequestBody BoardDto boardDto ) {
         log.info("board dto : " + boardDto);
         return boardService.boardWrite( boardDto );
     }
 
     // 5. 전체 게시물 출력하기
-    @GetMapping("/list")
-    public List<BoardDto> boardList( @RequestParam int cno ) {
-        log.info("cno : " + cno);
-        return boardService.boardList( cno );
+    @GetMapping("")
+    public PageDto boardList(@RequestParam int cno , @RequestParam int page ) {
+        log.info("cno : " + cno );
+        log.info("page : " + page );
+        return boardService.boardList( cno , page );
+    }
+
+    @PutMapping("")
+    public boolean boardUpdate( @RequestBody BoardDto boardDto){
+        return false;
+    }
+
+    // 7. 선택한 게시물 삭제
+    @DeleteMapping("")
+    public boolean deleteBoard( @RequestParam int bno ){
+        return boardService.deleteBoard( bno );
     }
 
     // 3. 내가 쓴 게시물 출력하기
@@ -70,16 +83,12 @@ public class BoardController {
     }
 
     // 6. 선택한 게시물 출력하기
-    @GetMapping("/select")
+    @GetMapping("/getboard")
     public BoardDto selectBoard( @RequestParam int bno ){
         return boardService.selectBoard( bno );
     }
 
-    // 7. 선택한 게시물 삭제
-    @DeleteMapping("/delete")
-    public boolean deleteBoard( @RequestParam int bno ){
-        return boardService.deleteBoard( bno );
-    }
+
 
 
 }

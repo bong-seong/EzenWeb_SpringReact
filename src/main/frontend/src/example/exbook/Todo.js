@@ -39,7 +39,7 @@ export default function Todo( props ) {
     const turnOnReadOnly = (e) => { console.log("turnOnReadOnly")
         if( e.key == "Enter" ){
             setReadOnly( true );
-            axios.put( "http://192.168.17.34:8080/todo" , item )
+            axios.put( "/todo.do" , item )
                             .then( r => { console.log( r ) } );
         }
     }
@@ -54,7 +54,7 @@ export default function Todo( props ) {
     // 8. 체크박스 업데이트
     const checkboxEventHandler = (e) => {
         item.done = e.target.checked;
-        axios.put( "http://192.168.17.34:8080/todo" , item )
+        axios.put( "/todo.do" , item )
                         .then( r => { console.log( r ) } );
         editItem(); // 상위 컴포넌트 렌더링
     }

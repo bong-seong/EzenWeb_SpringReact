@@ -35,8 +35,10 @@ export default function Find( props) {
 
         let info ={
             memail : document.querySelector('#memail').value,
-            mphone : document.querySelector('#mphone').value
+            mphone : document.querySelector('#pwmphone').value
         }
+
+        console.log( info );
 
         axios.post("/member/findpw", info)
             .then( r => {
@@ -89,7 +91,7 @@ export default function Find( props) {
 
                     <div className="findPW">
                         <TextField fullWidth className="memail" id="memail" label="아이디/이메일" variant="standard" />
-                        <TextField fullWidth className="mphone" id="mphone" label="전화번호" variant="standard" />
+                        <TextField fullWidth className="mphone" id="pwmphone" label="전화번호" variant="standard" />
                         <Button fullWidth variant="outlined" onClick={ findPW } className="findBtn"> 비밀번호찾기 </Button>
                         <div className="returnBox"> { returnPW } </div>
                     </div>

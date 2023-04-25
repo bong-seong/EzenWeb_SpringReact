@@ -13,23 +13,29 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 */
 /* ---------------------------------- */
+import Pagination from '@mui/material/Pagination';
+
 export default function List( props ){
 
     // 1. 요청한 게시물 정보를 가지고 있는 리스트 변수 [ 상태관리 변수 ]
     let [ rows , setRows ] = useState( [] )
-    let [ cno , setCno] = useState( 0 );
+    let [ pageInfo , setPageInfo] = useState( { 'cno' : 0 , 'page' : 1 } );
+    let [ totalPage , setTotalPage ] = useState( 1 );
+    let [ totalCount , setTotalCount ] = useState( 1 );
 
 
     // 2. 서버에게 요청하기 [ 컴포넌트가 처음 생성되었을때 ]
     // useEffect( ()=> {} , [] ) vs useEffect( ()=> {} )
     useEffect( () => {
-        axios.get('/board/list', { params: { cno : cno } } )
+        axios.get('/board', { params: pageInfo } )
             .then( r => {
                 console.log(r);
-                setRows( r.data );
+                setRows( r.data.boardDtoList );     // 응답받은 게시물 대입
+                setTotalPage( r.data.totalPage );   // 응답받은 페이지수 대입
+                setTotalCount( r.data.totalCount ); // 응답받은 총 게시물수 대입
             })
             .catch( err => { console.log(err); })
-    }, [ cno ] ) // cno 변경될때마다 해당 useEffect 실행
+    }, [ pageInfo ] ) // pageInfo ( cno , page ) 변경될때마다 해당 useEffect 실행
 
     // useEffect( ()=> {} )             : 생성 , 업데이트
     // useEffect( ()=> {} , [])         : 생성될때 1번
@@ -38,12 +44,27 @@ export default function List( props ){
 
     // 3. 카테고리 변경
     const categoryChange = ( cno ) => {
-        setCno( cno );
+        pageInfo.cno = cno;
+        setPageInfo( {...pageInfo} );
+    }
+    // [ ...배열명 ] , { ...객체명 } : 기존 배열/객체의 새로운 메모리 할당
+
+    // 4. 페이징 번호 선택
+
+    const selectPage = (e) => {
+        // console.log( e );
+        console.log( e.target );             // button
+        console.log( e.target.value );       // button 이라서 value 속성 없음 x
+        console.log( e.target.innerHTML );   // 해당 button 에서 안에 작성된 html 호출
+        console.log( e.target.outerText );      // 해당 tag ( button )  밖에 있는 text 출력
+        pageInfo.page = e.target.outerText;
+        setPageInfo( {...pageInfo} );
     }
 
 
     return (<>
         <Container>
+            <div> 현재페이지 : { pageInfo.page }  / 게시물수 : { totalCount } </div>
             <div style={{ display:'flex' , justifyContent:'space-between' , alignItems:'center' }}>
                 <CategoryList categoryChange = {categoryChange} />
                 <a href="/board/write"><Button variant="outlined"> 글쓰기 </Button></a>
@@ -75,6 +96,14 @@ export default function List( props ){
                 </TableBody>
               </Table>
             </TableContainer>
+
+            <div style={{ display:'flex' , justifyContent : 'center' , margin: '40px 0px'}}>
+                { /* count = 전체 페이지수 */ }
+                <Pagination count={ totalPage } color="secondary" onClick={ selectPage } />
+            </div>
+
         </Container>
     </>);
 }
+
+

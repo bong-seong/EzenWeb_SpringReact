@@ -1,6 +1,7 @@
 package ezenweb.web.controller;
 
 import ezenweb.web.domain.todo.TodoDto;
+import ezenweb.web.domain.todo.TodoPageDto;
 import ezenweb.web.service.TodoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// @CrossOrigin(origins = "http://192.168.17.34:3000") // 해당 컨트롤러는 http://localhost:3000 요청 CORS 정책 적용
 @RestController @Slf4j
-@CrossOrigin(origins = "http://192.168.17.34:3000") // 해당 컨트롤러는 http://localhost:3000 요청 CORS 정책 적용
-@RequestMapping("/todo")
+@RequestMapping("/todo.do")
 public class TodoController {
 
     @Autowired TodoService todoService;
 
     @GetMapping("")
-    public List<TodoDto> get(){     // TodoDto , TodoService , TodoEntity , Repository 작업
+    public TodoPageDto get(@RequestParam int page ){     // TodoDto , TodoService , TodoEntity , Repository 작업
         // [ 과제 ] 서비스 구현
         /*
         // 테스트 [ 서비스에게 전달 받았다는 가정 ]
@@ -26,7 +27,7 @@ public class TodoController {
         list.add(new TodoDto( 2 , "게시물2" , false ) );
         list.add(new TodoDto( 3 , "게시물3" , true ) );
         */
-        return todoService.get(); // 서비스에서 리턴 결과를 axios 에게 응답
+        return todoService.get( page ); // 서비스에서 리턴 결과를 axios 에게 응답
     }
 
 

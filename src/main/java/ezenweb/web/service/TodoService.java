@@ -1,10 +1,16 @@
 package ezenweb.web.service;
 
+import ezenweb.web.domain.board.PageDto;
 import ezenweb.web.domain.todo.TodoDto;
 import ezenweb.web.domain.todo.TodoEntity;
 import ezenweb.web.domain.todo.TodoEntityRepository;
+import ezenweb.web.domain.todo.TodoPageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,17 +24,23 @@ public class TodoService {
     @Autowired TodoEntityRepository todoEntityRepository;
 
     // 1. GET
-    public List<TodoDto> get(){
+    public TodoPageDto get( int page ){
 
-        List<TodoEntity> entityList = todoEntityRepository.findAll() ;
+        Pageable pageable = PageRequest.of( page-1 , 3 , Sort.by(Sort.Direction.DESC , "id") );
+
+        Page<TodoEntity> todoEntityPage = todoEntityRepository.findAll( pageable );
 
         List<TodoDto> list = new ArrayList<>();
-
-        entityList.forEach( (e) -> {
-            list.add( e.toDto() );
+        todoEntityPage.forEach( (o) -> {
+            list.add( o.toDto() );
         });
 
-        return list;
+        return TodoPageDto.builder()
+                .todoDtoList( list )
+                .totalCount( todoEntityPage.getTotalElements() )
+                .totalPage( todoEntityPage.getTotalPages() )
+                .page( page )
+                .build();
     }
 
     // 2. POST

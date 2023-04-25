@@ -5,7 +5,7 @@ import { Container , Box , TextField , Button } from '@mui/material';
 
 export default function Login( props ) {
 
-    // 로그인
+    // 일반회원 로그인
     const onLogin = () =>{
 
         console.log( 'onLogin 실행' )
@@ -27,8 +27,7 @@ export default function Login( props ) {
                     // 다시 꺼내서 사용할때는 JSON.parse( 객체 )
                     // localStorage.setItem("login_token" , JSON.stringify( r.data ) );
                     // JS 세션스토리지 [ 브라우저 모두 닫히면 사라진다. ]
-                    sessionStorage.setItem("login_token" , JSON.stringify( r.data ) );
-
+                    // sessionStorage.setItem("login_token" , JSON.stringify( r.data ) );
                     window.location.href="/";
                 }
             })

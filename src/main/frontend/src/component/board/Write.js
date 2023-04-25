@@ -7,30 +7,39 @@ import CategoryList from './CategoryList'
 
 export default function Write( props ) {
 
-    let selectCno = 1;
+    // 카테고리 선택
+    let [ cno , setCno ] = useState( 0 );
+    const categoryChange = ( cno ) =>{
+        setCno( cno );
+    }
+
     // 1. 게시물 쓰기
     const setBoard = () => {
-        if( selectCno == 0 ){
+        let info = {
+            btitle : document.querySelector('#btitle').value,
+            bcontent : document.querySelector('#bcontent').value,
+            cno : cno // 선택된 카테고리 번호
+        }
+        console.log( info );
+
+        axios.post("/board" , info).then( r => {
+            if( r.data == 1 ){
                 alert("작성할 게시물의 카테고리를 선택해주세요");
-                return;
+            }else if( r.data == 2 ){
+                alert("로그인 후 작성 가능합니다.")
+            }else if( r.data == 3 ){
+                alert("게시물 작성실패 [ 관리자에게 문의 ]")
+            }else if( r.data == 4 ){
+                alert("작성 성공");
+                window.location.href="/board/list"
             }
-
-            let info = {
-                btitle : document.querySelector('#btitle').value,
-                bcontent : document.querySelector('#bcontent').value,
-                cno : 1
-            }
-            console.log( info );
-
-            axios.post("/board/write" , info)
-                .then( r => {
-                    console.log( r );
-                })
+        })
     }
+
 
     return (<>
         <Container>
-            <CategoryList />
+            <CategoryList categoryChange={ categoryChange } />
             <TextField fullWidth className="btitle" id="btitle" label="제목" variant="standard" />
             <TextField fullWidth className="bcontent" id="bcontent"
                       label="내용"

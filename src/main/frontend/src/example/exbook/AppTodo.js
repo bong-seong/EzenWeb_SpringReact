@@ -3,22 +3,26 @@ import Todo from './Todo';
 import { List , Paper , Container } from '@mui/material';
 import AddTodo from './AddTodo';
 import axios from 'axios'; // npm install axios vs [ install -> i ]
+import Pagination from '@mui/material/Pagination';
 
 // 교재 App 컴포넌트 --> AppTodo 컴포넌트
 export default function AppTodo( props ) {
 
     // 1.
     // item 객체에 { id : "0" , title : "Hellow World 1" , done : true } 대입한것과 같음
-    const [ items , setItems ] = useState(
-        [
-        ]
-    );
+    const [ items , setItems ] = useState( [] );
 
+    const [ page , setPage ] = useState( 1 );
+    let [ totalPage , setTotalPage ] = useState( 1 );
+    let [ totalCount , setTotalCount ] = useState( 1 );
+
+    // 전체 리스트 가져오기
     const getTodo = () => {
-        axios.get( "http://192.168.17.34:8080/todo" )
-            .then( r => {
+        axios.get( "/todo.do" , { params: { 'page' : page } } ).then( r => {
                 console.log( r );
-                setItems( r.data );
+                setItems( r.data.todoDtoList );
+                setTotalPage( r.data.totalPage );
+                setTotalCount( r.data.totalCount );
             }
         );
     }
@@ -39,12 +43,12 @@ export default function AppTodo( props ) {
             header is present on the requested resource. ** 에러 발생 **
         */
 
-    } , [] );
+    } , [ page ] );
 
 
     // 2. items에 새로운 item 등록하는 함수
     const addItem = ( item ) => { // 함수로부터 매개변수로 전달받은 item
-        axios.post( "http://192.168.17.34:8080/todo" , item )
+        axios.post( "/todo.do" , item )
                                    .then( r => {
                                        console.log( r );
                                        getTodo();
@@ -72,9 +76,10 @@ export default function AppTodo( props ) {
                 // 반복문이 끝나면 array에는 [ 3 ]
 
         setItems( [...newItems] );
-        axios.delete( "http://192.168.17.34:8080/todo" , { params : { id : item.id } } )
+        axios.delete( "/todo.do" , { params : { id : item.id } } )
             .then( r => {
                 console.log( "delete : " + r.data );
+                getTodo();
             });
     }
 
@@ -100,11 +105,23 @@ export default function AppTodo( props ) {
                 }
             </List>
         </Paper>
+
+    const selectPage = (e) => {
+        console.log( e.target.outerText );
+        setPage( e.target.outerText );
+    }
+
+
     return ( <>
         <div className="App">
             <Container maxWidth="md">
                 <AddTodo addItem={addItem} />
                 { TodoItems }
+
+                <div style={{ display:'flex' , justifyContent:'center' , margin: '40px 0px' }}>
+                    <Pagination count={ totalPage } variant="outlined" color="secondary" onClick={ selectPage }/>
+                </div>
+
             </Container>
         </div>
     </> );

@@ -6,6 +6,10 @@ import ezenweb.web.domain.member.MemberEntity;
 import ezenweb.web.domain.member.MemberEntityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -123,30 +127,27 @@ public class BoardService {
 
     // 5. 카테고리별 게시물 출력
     @Transactional
-    public List<BoardDto> boardList( int cno ) {
-        log.info("service boardList : " + cno);
+    public PageDto boardList( int cno , int page ) {
+        // 1. pageable 인터페이스 [ 페이징처리 관련 api ]
+        Pageable pageable = PageRequest.of( page-1 , 3 , Sort.by( Sort.Direction.DESC , "bno") );
+            // PageRequest.of( 페이지번호 [ 0 시작 ] , 페이지당 표시할개수 , Sort.by( Sort.Direction.ASC/DESC , '정렬기준필드명' ) );
+        Page<BoardEntity> entityPage = boardEntityRepository.findBySearch( cno , pageable );
 
+        //
         List<BoardDto> list = new ArrayList<>();
+        entityPage.forEach( (b) -> {
+            list.add( b.toDto() );
+        });
 
-        if( cno == 0 ){ // 전체보기
+        log.info( "총 게시물수 : " + entityPage.getTotalElements() );
+        log.info( "총 페이지수 : " + entityPage.getTotalPages() );
 
-            List<BoardEntity> boardEntityList = boardEntityRepository.findAll() ; // 카테고리 정보 전체출력
-            boardEntityList.forEach( (e) -> { // 엔티티[레코드] 하나씩 반복문
-                list.add( e.toDto() ) ; // 엔티티[레코드] 하나씩 dto 변환후 리스트 담기
-            });
-
-        }else{ // 카테고리별
-
-            Optional<CategoryEntity> categoryEntityOptional = categoryEntityRepository.findById( cno ) ; // cno 에 해당하는 카테고리 정보 출력
-            if( categoryEntityOptional.isPresent() ){
-                CategoryEntity categoryEntity = categoryEntityOptional.get();
-                categoryEntity.getBoardEntityList().forEach( (e) ->{
-                    list.add( e.toDto() );
-                });
-            }
-
-        }
-        return list; // 리스트 반환
+        return PageDto.builder()
+                .boardDtoList( list )
+                .totalCount( entityPage.getTotalElements() )
+                .totalPage( entityPage.getTotalPages() )
+                .cno( cno ).page( page )
+                .build();
     }
 
 
