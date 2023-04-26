@@ -10,15 +10,16 @@ export default function ReplyContent( props ) {
     const [ reply , setReply ] = useState( props.reply );
     console.log( props.reply );
 
+    const deleteReply = props.deleteReply;
+
     const deleteEventHandler = () => {
-        props.deleteReply( reply );
+        deleteReply(reply);
     }
 
     return (<>
         <ListItem>
             <ListItemText>
                 <InputBase
-                    inputProps={{ readOnly : true }}
                     type="text"
                     id={ reply.rno }
                     value={ reply.rcontent }
@@ -28,7 +29,7 @@ export default function ReplyContent( props ) {
             </ListItemText>
 
             <ListItemSecondaryAction>
-                <IconButton onClick={ deleteEventHandler }>
+                <IconButton aria-label="Delete todo" onClick={ deleteEventHandler }>
                     <DeleteOutlined />
                 </IconButton>
             </ListItemSecondaryAction>

@@ -10,6 +10,9 @@ import { List , Paper , Container } from '@mui/material';
 
 export default function Reply( props ) {
 
+    console.log( "Reply 실행" );
+    const replyRender = props.replyRender;
+
     const [ replies , setReplies ] = useState( [] );
 
     const getReplies = () =>{
@@ -31,46 +34,46 @@ export default function Reply( props ) {
        axios.post("/reply" , reply ).then( r => {
            console.log(r);
            if( r.data == 3 ){
-                alert("댓글작성 성공")
-                setReplies( [...replies , reply] );
+                getReplies();
            }else{
                 alert("회원 기능입니다. 로그인 후 작성하세요")
            }
        })
-       getReplies();
     }
 
 
     // 리플 삭제
     const deleteReply = ( reply ) => {
+        console.log( reply.rno );
+        const newReply = replies.filter( (o) => { return o.rno != reply.rno } );
+        console.log( newReply );
         axios.delete("/reply" , { params : reply } ).then( r => {
             console.log(r)
             if( r.data == 3 ){
-                alert( '댓글삭제 성공' )
-                getReplies();
+                console.log( '댓글삭제 성공' )
+                setReplies( newReply );
+                replyRender( reply.rno );
+                window.location.reload();
             }else{
                 alert('작성한 본인만 삭제 가능합니다.');
             }
         })
     }
 
-
-
-
     const replyItem =
         <List>
             {
-                replies.map( ( reply ) =>
-                    <ReplyContent
-                        reply={ reply }
-                        deleteReply={ deleteReply }
-                    />
+                replies.map( ( reply ) => {
+                        console.log('map 실행')
+
+                        return <ReplyContent
+                            reply={ reply }
+                            deleteReply={ deleteReply }
+                        />
+                    }
                 )
             }
         </List>
-
-
-
 
     return (<>
         <div>
