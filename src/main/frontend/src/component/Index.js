@@ -10,6 +10,8 @@ import List from './board/List';
 import Write from './board/Write';
 import DashBoard from './admin/DashBoard';
 import AppTodo from '../example/exbook/AppTodo';
+import View from './board/View';
+import Update from './board/Update';
 
 
 /*
@@ -34,9 +36,14 @@ export default function Index( props ){
                 <Route path="/member/login" element={ <Login /> } />
                 <Route path="/member/signup" element={ <Signup /> } />
                 <Route path="/member/find" element={ <Find /> } />
-                <Route path="/board/list" element={ <List /> } />
+
                 <Route path="/admin/dashboard" element={ <DashBoard /> } />
+
+                <Route path="/board/list" element={ <List /> } />
                 <Route path="/board/write" element={ <Write /> } />
+                <Route path="/board/view/:bno" element={ <View /> } />
+                <Route path="/board/update" element={ <Update /> } />
+
                 <Route path="/todo" element={ <AppTodo /> } />
             </Routes>
 

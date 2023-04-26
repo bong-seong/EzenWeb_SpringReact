@@ -10,7 +10,6 @@ export default function Header( props ){
 
     // 로그아웃
     const logOut = () => {
-
         // JS 세션 스토리지 초기화
         sessionStorage.setItem("login_token" , null );
 
@@ -19,8 +18,6 @@ export default function Header( props ){
             .then( r => {
                 console.log( r );
             })
-
-        window.location.href="/"
         setLogin( null ); // 렌더링
     }
 

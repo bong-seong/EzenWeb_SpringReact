@@ -29,4 +29,14 @@ public class ReplyEntity {
     @ToString.Exclude
     private BoardEntity boardEntity;
 
+    public ReplyDto toDto() {
+        return ReplyDto.builder()
+                .rno( this.rno )
+                .rcontent( this.rcontent )
+                .rdate( this.rdate )
+                .rindex( this.rindex )
+                .bno( this.boardEntity.getBno() )
+                .mno( this.memberEntity.getMno() )
+                .build();
+    }
 }

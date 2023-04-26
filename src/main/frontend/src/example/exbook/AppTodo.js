@@ -48,13 +48,12 @@ export default function AppTodo( props ) {
 
     // 2. items에 새로운 item 등록하는 함수
     const addItem = ( item ) => { // 함수로부터 매개변수로 전달받은 item
-        axios.post( "/todo.do" , item )
-                                   .then( r => {
-                                       console.log( r );
-                                       getTodo();
-                                   });
-        setItems( [...items , item] ); // 기존 상태 items 에 item 추가
-        // setItems( ...상태명 , 추가할데이터 ] );
+       axios.post( "/todo.do" , item ).then( r => {
+           console.log( r );
+           getTodo();
+       });
+       setItems( [...items , item] ); // 기존 상태 items 에 item 추가
+       // setItems( ...상태명 , 추가할데이터 ] );
     }
 
     // 3. items 에서 item 삭제
@@ -76,11 +75,10 @@ export default function AppTodo( props ) {
                 // 반복문이 끝나면 array에는 [ 3 ]
 
         setItems( [...newItems] );
-        axios.delete( "/todo.do" , { params : { id : item.id } } )
-            .then( r => {
-                console.log( "delete : " + r.data );
-                getTodo();
-            });
+        axios.delete( "/todo.do" , { params : { id : item.id } } ).then( r => {
+            console.log( "delete : " + r.data );
+            getTodo();
+        });
     }
 
     // 4. 수정함수
@@ -106,9 +104,8 @@ export default function AppTodo( props ) {
             </List>
         </Paper>
 
-    const selectPage = (e) => {
-        console.log( e.target.outerText );
-        setPage( e.target.outerText );
+    const selectPage = (e , value ) => {
+        setPage( value );
     }
 
 
@@ -119,7 +116,7 @@ export default function AppTodo( props ) {
                 { TodoItems }
 
                 <div style={{ display:'flex' , justifyContent:'center' , margin: '40px 0px' }}>
-                    <Pagination count={ totalPage } variant="outlined" color="secondary" onClick={ selectPage }/>
+                    <Pagination count={ totalPage } variant="outlined" color="secondary" onChange={ selectPage }/>
                 </div>
 
             </Container>

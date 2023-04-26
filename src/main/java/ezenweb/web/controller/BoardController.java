@@ -58,15 +58,15 @@ public class BoardController {
 
     // 5. 전체 게시물 출력하기
     @GetMapping("")
-    public PageDto boardList(@RequestParam int cno , @RequestParam int page ) {
-        log.info("cno : " + cno );
-        log.info("page : " + page );
-        return boardService.boardList( cno , page );
+    public PageDto boardList( PageDto dto ) {
+        log.info("cno : " + dto.getCno() ); log.info("page : " + dto.getPage() );
+        log.info("key : " + dto.getKey() ); log.info("keyword : " + dto.getKeyword() );
+        return boardService.boardList( dto );
     }
 
     @PutMapping("")
     public boolean boardUpdate( @RequestBody BoardDto boardDto){
-        return false;
+        return boardService.boardUpdate( boardDto );
     }
 
     // 7. 선택한 게시물 삭제

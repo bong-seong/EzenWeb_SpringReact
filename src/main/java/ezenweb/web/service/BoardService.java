@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -127,11 +128,16 @@ public class BoardService {
 
     // 5. 카테고리별 게시물 출력
     @Transactional
-    public PageDto boardList( int cno , int page ) {
+    public PageDto boardList( PageDto dto ) {
+
+        log.info("cno : " + dto.getCno() ); log.info("page : " + dto.getPage() );
+        log.info("key : " + dto.getKey() ); log.info("keyword : " + dto.getKeyword() );
+
         // 1. pageable 인터페이스 [ 페이징처리 관련 api ]
-        Pageable pageable = PageRequest.of( page-1 , 3 , Sort.by( Sort.Direction.DESC , "bno") );
+        Pageable pageable = PageRequest.of( dto.getPage()-1 , 3 , Sort.by( Sort.Direction.DESC , "bno") );
             // PageRequest.of( 페이지번호 [ 0 시작 ] , 페이지당 표시할개수 , Sort.by( Sort.Direction.ASC/DESC , '정렬기준필드명' ) );
-        Page<BoardEntity> entityPage = boardEntityRepository.findBySearch( cno , pageable );
+        Page<BoardEntity> entityPage =
+                boardEntityRepository.findBySearch( dto.getCno() , dto.getKey() , dto.getKeyword() , pageable );
 
         //
         List<BoardDto> list = new ArrayList<>();
@@ -142,12 +148,11 @@ public class BoardService {
         log.info( "총 게시물수 : " + entityPage.getTotalElements() );
         log.info( "총 페이지수 : " + entityPage.getTotalPages() );
 
-        return PageDto.builder()
-                .boardDtoList( list )
-                .totalCount( entityPage.getTotalElements() )
-                .totalPage( entityPage.getTotalPages() )
-                .cno( cno ).page( page )
-                .build();
+        dto.setBoardDtoList( list );
+        dto.setTotalCount( entityPage.getTotalElements() );
+        dto.setTotalPage( entityPage.getTotalPages() );
+
+        return dto;
     }
 
 
@@ -202,7 +207,24 @@ public class BoardService {
         }else{
             return false;
         }
+    }
 
+    // 게시물 수정
+    @Transactional
+    public boolean boardUpdate( @RequestBody BoardDto boardDto){
+
+        Optional<BoardEntity> boardEntityOptional = boardEntityRepository.findById( boardDto.getBno() );
+
+        if( boardEntityOptional.isPresent() ){
+
+            BoardEntity boardEntity = boardEntityOptional.get();
+            boardEntity.setBtitle( boardDto.getBtitle() );
+            boardEntity.setBcontent( boardDto.getBcontent() );
+            return true;
+
+        }
+
+        return false;
     }
 
 

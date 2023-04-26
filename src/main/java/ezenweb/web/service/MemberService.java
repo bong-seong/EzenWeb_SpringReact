@@ -86,12 +86,13 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
 
         // 인가 객체 [ OAuth2User ----> MemberDto 통합Dto ( 일반+oauth ) ]
         MemberDto memberDto = new MemberDto();
+
         memberDto.set소셜회원정보( oAuth2User.getAttributes() );
         memberDto.setMemail( email );
         memberDto.setMname( name );
-            Set<GrantedAuthority> 권한목록 = new HashSet<>();
-            SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority( "ROLE_user" );
-            권한목록.add( 권한 );
+        Set<GrantedAuthority> 권한목록 = new HashSet<>();
+        SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority( "ROLE_user" );
+        권한목록.add( 권한 );
         memberDto.set권한목록( 권한목록 );
 
         // 1. DB 저장하기 전에 해당 이메일로 된 이메일 존재하는지 검사
@@ -103,6 +104,7 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         }else{ // 두번째 방문 이상이면 수정처리
             entity.setMname( name );
         }
+        memberDto.setMno( entity.getMno() ); // 위에서 생성된 혹은 검색된 엔티티의 회원번호
         return memberDto;
     }
 
