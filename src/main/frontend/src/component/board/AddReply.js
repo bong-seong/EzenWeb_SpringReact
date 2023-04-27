@@ -7,8 +7,6 @@ import { Button , Grid , TextField } from '@mui/material';
 
 export default function AddReply( props ) {
 
-    console.log( props.bno );
-
     const [ reply , setReply ] = useState({
         rcontent : "",
         bno : props.bno

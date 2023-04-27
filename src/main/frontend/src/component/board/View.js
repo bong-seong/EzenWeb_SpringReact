@@ -15,6 +15,7 @@ export default function View( props ) {
 
     const [ board , setBoard ] = useState ( {} );
     const [ login , setLogin ] = useState( JSON.parse( sessionStorage.getItem("login_token")) );
+    const [ trigger , setTrigger ] = useState(0);
 
     useEffect( () => {
         axios.get("/board/getboard" , { params : { bno : params.bno } } ).then( r => {
@@ -52,6 +53,9 @@ export default function View( props ) {
         }
     }
 
+    const replyRender = (rno) => {
+        setTrigger( rno );
+    }
 
     return (<>
         <Container>
@@ -60,7 +64,7 @@ export default function View( props ) {
             <p>{ board.bcontent }</p>
             { btnBox() }
 
-            <Reply bno={params.bno} />
+            <Reply bno={params.bno} replyRender={ replyRender } />
         </Container>
     </>);
 }
