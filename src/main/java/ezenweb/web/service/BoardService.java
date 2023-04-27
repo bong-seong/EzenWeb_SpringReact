@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -24,6 +23,7 @@ public class BoardService {
     @Autowired private BoardEntityRepository boardEntityRepository;
     @Autowired private CategoryEntityRepository categoryEntityRepository;
     @Autowired private MemberEntityRepository memberEntityRepository;
+    @Autowired private ReplyEntityRepository replyEntityRepository;
 
     // 1. 카테고리 등록
     public boolean categoryWrite( BoardDto boardDto ){
@@ -172,13 +172,24 @@ public class BoardService {
         return list;
     }
 
-    // 6. 선택한 게시물 출력하기
+    // 6. 선택한 게시물 출력하기 + 댓글 출력
     public BoardDto selectBoard( int bno ) {
 
         Optional<BoardEntity> boardEntityOptional = boardEntityRepository.findById( bno );
 
-        if( boardEntityOptional.isPresent() ){
-            return boardEntityOptional.get().toDto();
+        if( boardEntityOptional.isPresent() ){ // 게시물 출력시 현재 게시물의 댓글도 같이 출력
+
+            BoardEntity boardentity = boardEntityOptional.get();
+
+            List<ReplyDto> list = new ArrayList<>();
+            boardentity.getReplyEntityList().forEach( (o) ->{
+                list.add( o.toDto() );
+            });
+
+            BoardDto boardDto = boardentity.toDto();
+            boardDto.setReplyDtoList( list );
+
+            return boardDto;
         }
 
         return null;
@@ -186,7 +197,6 @@ public class BoardService {
 
     // 7. 선택한 게시물 삭제하기
     public boolean deleteBoard( int bno ) {
-
 
         // 게시물 찾기
         Optional<BoardEntity> boardEntityOptional = boardEntityRepository.findById( bno );
@@ -211,7 +221,7 @@ public class BoardService {
 
     // 게시물 수정
     @Transactional
-    public boolean boardUpdate( @RequestBody BoardDto boardDto){
+    public boolean boardUpdate( BoardDto boardDto){
 
         Optional<BoardEntity> boardEntityOptional = boardEntityRepository.findById( boardDto.getBno() );
 
@@ -221,11 +231,95 @@ public class BoardService {
             boardEntity.setBtitle( boardDto.getBtitle() );
             boardEntity.setBcontent( boardDto.getBcontent() );
             return true;
+        }
+        return false;
+    }
 
+    @Transactional
+    public boolean postReply( ReplyDto replyDto ){
+
+        // 0. 로그인 했는지
+        Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if( o.equals("anonymousUser") ){
+            return false;
+        }
+        MemberDto memberDto = (MemberDto)o;
+        MemberEntity memberEntity = memberEntityRepository.findById( memberDto.getMno() ).get();
+
+
+        // 0. 댓글 작성할 게시물 호출
+        Optional<BoardEntity> boardEntityOptional = boardEntityRepository.findById( replyDto.getBno() );
+        if( !boardEntityOptional.isPresent() ){
+            return false;
+        }
+        BoardEntity boardEntity = boardEntityOptional.get();
+
+
+        // 1. 댓글 작성
+        ReplyEntity replyEntity = replyEntityRepository.save( replyDto.toEntity() );
+
+
+        // 2. 양방향
+        replyEntity.setMemberEntity( memberEntity );
+        memberEntity.getReplyEntityList().add( replyEntity );
+
+        replyEntity.setBoardEntity( boardEntity );
+        boardEntity.getReplyEntityList().add( replyEntity );
+
+        return true;
+    }
+
+    @Transactional
+    public boolean updateReply( ReplyDto replyDto ) {
+
+        Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if( o.equals("anonymousUser") ) {
+            return false;
+        }
+        // 2. 형변환
+        MemberDto memberDto = (MemberDto)o;
+        // 3. 회원엔티티 찾기
+        MemberEntity memberEntity = memberEntityRepository.findById( memberDto.getMno() ).get();
+
+        Optional<ReplyEntity> optionalReplyEntity = replyEntityRepository.findById( replyDto.getRno() );
+        if( optionalReplyEntity.isPresent()){
+
+            if( optionalReplyEntity.get().getMemberEntity().getMno() != memberDto.getMno() ){
+                return false;
+            }
+
+            optionalReplyEntity.get().setRcontent( replyDto.getRcontent() );
+            return true;
         }
 
         return false;
     }
+
+    public boolean deleteReply( int rno , int mno ){
+
+        Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if( o.equals("anonymousUser") ) {
+            return false;
+        }
+        // 2. 형변환
+        MemberDto memberDto = (MemberDto)o;
+        // 3. 회원엔티티 찾기
+        MemberEntity memberEntity = memberEntityRepository.findById( memberDto.getMno() ).get();
+
+        if( memberEntity.getMno() != mno){
+            return false;
+        }
+
+        Optional<ReplyEntity> optionalReplyEntity = replyEntityRepository.findById( rno );
+        if( optionalReplyEntity.isPresent()){
+            replyEntityRepository.delete( optionalReplyEntity.get() );
+            return true;
+        }
+
+        return false;
+    }
+
+
 
 
 }

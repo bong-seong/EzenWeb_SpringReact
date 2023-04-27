@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor @NoArgsConstructor @Builder
 public class BoardDto {
@@ -23,7 +26,8 @@ public class BoardDto {
     private String bdate;
     // 조회수
     private int bview;
-
+    // 댓글 목록
+    private List<ReplyDto> replyDtoList = new ArrayList<>();
 
 
     // Entity 변환 메소드

@@ -3,8 +3,14 @@ import { useParams } from 'react-router-dom'; // HTTP 경로상의 매개변수 
 import axios from 'axios';
 
 import Reply from './Reply';
+import ReplyList from './ReplyList';
 
-import { Container } from '@mui/material';
+import { Container, List , Paper , Button } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { TreeView , TreeItem } from '@mui/lab';
+import { ListItem , ListItemText , InputBase , Checkbox , ListItemSecondaryAction , IconButton } from '@mui/material';
+import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
 
 export default function View( props ) {
 
@@ -13,20 +19,31 @@ export default function View( props ) {
     console.log( params );
     console.log( params.bno );
 
-    const [ board , setBoard ] = useState ( {} );
+    const loginSession = JSON.parse( sessionStorage.getItem("login_token") ) ;
+    console.log( loginSession.mno );
+
+    const [ board , setBoard ] = useState ( {
+        replyDtoList : []
+    } );
+
     const [ login , setLogin ] = useState( JSON.parse( sessionStorage.getItem("login_token")) );
     const [ trigger , setTrigger ] = useState(0);
 
-    useEffect( () => {
+
+    // 1. 현재 게시물 가져오는 axios 함수
+    const getBoard = () => {
         axios.get("/board/getboard" , { params : { bno : params.bno } } ).then( r => {
             console.log( r );
             setBoard( r.data );
         })
+    }
+
+    useEffect( () => {
+        getBoard();
     } , [] );
 
 
     const onDelete = () => {
-
         axios.delete("/board" , { params : { bno : board.bno } } ).then( r => {
             console.log( r.data );
             if( r.data == true ){
@@ -53,9 +70,81 @@ export default function View( props ) {
         }
     }
 
-    const replyRender = (rno) => {
-        setTrigger( rno );
+    const renderTrigger = () => {
+        setTrigger( 1 );
     }
+
+    // 2. 댓글 작성시 렌더링
+     const onReplyWrite = ( rcontent ) => {
+        let info = {
+            bno : board.bno,
+            rcontent : rcontent
+        }
+        console.log( info );
+
+        axios.post("/board/reply" , info ).then( (r) => {
+            console.log( r.data );
+            if( r.data ) {
+                alert("글쓰기 완료")
+                getBoard();
+            }else{
+                alert("로그인이 필요한 서비스입니다.");
+            }
+        })
+     }
+
+
+     // 대댓글 등록
+     const OnReReplyWrite = ( rcontent , rindex ) => {
+
+        console.log( rcontent + rindex );
+
+        let info = {
+            rindex : rindex,
+            rcontent : rcontent,
+            bno : board.bno
+        }
+
+        axios.post("/board/reply" , info ).then( (r) => {
+            console.log( r.data )
+            if( r.data == true ){
+                getBoard();
+            }
+        })
+     }
+
+
+
+
+
+     // 3. 댓글 삭제 및 렌더링
+     const onReplyDelete = (rno) => {
+        console.log( rno );
+        axios.delete("/board/reply" , { params : { rno : rno , mno : loginSession.mno }  } ).then( (r) => {
+            console.log( r.data );
+            if( r.data ){
+                alert('삭제완료');
+                getBoard();
+            }else{
+                alert('작성자 본인만 삭제 가능합니다.');
+            }
+        })
+     }
+
+    // 4. 수정
+
+    const onUpdateRender = ( e , rno ) => {
+        board.replyDtoList.forEach( (o) => {
+            if( o.rno == rno ){
+                o.rcontent = e;
+                setBoard( {...board} );
+            }
+        })
+    }
+
+    // 5. 대댓글 작성 HTML 전달
+
+
 
     return (<>
         <Container>
@@ -63,8 +152,22 @@ export default function View( props ) {
             <h3>{ board.btitle }</h3>
             <p>{ board.bcontent }</p>
             { btnBox() }
+            { /*
+            <List>
+                <ReplyList
+                    onUpdateRender={ onUpdateRender }
+                    onReplyDelete={ onReplyDelete }
+                    onReplyWrite={ onReplyWrite }
+                    replyList={ board.replyDtoList }
+                    renderTrigger={ renderTrigger }
+                    OnReReplyWrite={ OnReReplyWrite }
+                    bno={ board.bno }
+                />
+            </List>
+            */ }
 
-            <Reply bno={params.bno} replyRender={ replyRender } />
+            <Reply bno={params.bno} />
+
         </Container>
     </>);
 }

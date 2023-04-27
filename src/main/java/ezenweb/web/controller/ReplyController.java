@@ -13,28 +13,6 @@ import java.util.List;
 @RequestMapping("/reply")
 public class ReplyController {
 
-    @Autowired
-    ReplyService replyService;
 
-    @PostMapping("")
-    public byte addReply(@RequestBody ReplyDto dto ){
-        return replyService.addReply(dto);
-    }
-
-    @GetMapping("")
-    public List<ReplyDto> getReply( @RequestParam int bno ){
-        return replyService.getReply(bno);
-    }
-
-    @PutMapping("")
-    public boolean updateReply( @RequestParam int rno ) {
-        return false;
-    }
-
-    @DeleteMapping("")
-    public byte deleteReply( ReplyDto replyDto ){
-        log.info("ReplyDto : " + replyDto );
-        return replyService.deleteReply(replyDto);
-    }
 
 }
