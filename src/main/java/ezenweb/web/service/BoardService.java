@@ -306,12 +306,13 @@ public class BoardService {
         // 3. 회원엔티티 찾기
         MemberEntity memberEntity = memberEntityRepository.findById( memberDto.getMno() ).get();
 
-        if( memberEntity.getMno() != mno){
-            return false;
-        }
 
         Optional<ReplyEntity> optionalReplyEntity = replyEntityRepository.findById( rno );
         if( optionalReplyEntity.isPresent()){
+
+            if( memberEntity.getMno() != optionalReplyEntity.get().getMemberEntity().getMno() ){
+                return false;
+            }
             replyEntityRepository.delete( optionalReplyEntity.get() );
             return true;
         }

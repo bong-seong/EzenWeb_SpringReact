@@ -20,7 +20,6 @@ export default function View( props ) {
     console.log( params.bno );
 
     const loginSession = JSON.parse( sessionStorage.getItem("login_token") ) ;
-    console.log( loginSession.mno );
 
     const [ board , setBoard ] = useState ( {
         replyDtoList : []
@@ -120,7 +119,7 @@ export default function View( props ) {
      // 3. 댓글 삭제 및 렌더링
      const onReplyDelete = (rno) => {
         console.log( rno );
-        axios.delete("/board/reply" , { params : { rno : rno , mno : loginSession.mno }  } ).then( (r) => {
+        axios.delete("/board/reply" , { params : { rno : rno }  } ).then( (r) => {
             console.log( r.data );
             if( r.data ){
                 alert('삭제완료');

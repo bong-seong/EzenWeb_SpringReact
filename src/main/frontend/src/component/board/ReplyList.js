@@ -80,7 +80,6 @@ export default function ReplyList( props ) {
         console.log("대댓글");
         console.log( e.target.id );
         let rcontent = prompt('대댓글을 입력하세요');
-        props.OnReReplyWrite( rcontent , e.target.id );
     }
 
     return (<>
@@ -106,6 +105,7 @@ export default function ReplyList( props ) {
                                 />
 
                             </ListItemText>
+                            <div className={"rereply"+r.rno}></div>
 
                             <ListItemSecondaryAction>
                                 <Button

@@ -1,0 +1,79 @@
+통합
+Controller
+	1. view 반환 [ Resource ] 제거
+	2. @CrossOrigin( origins="http://localhost:3000" )  제거
+
+SecurityConfigurationSource 
+	1. corsConfigurationSource 제거
+
+
+
+2. 그래이들 [ 빌드도구 ]
+/* 스프링부트 빌드시 리액트도 같이 빌드  */
+def frontendDir = "$projectDir/src/main/frontend" // 리액트 프로젝트 폴더 경로
+
+sourceSets {
+    main {
+        resources { srcDirs = ["$projectDir/src/main/resources"]
+        }
+    }
+}
+
+processResources { dependsOn "copyReactBuildFiles" }
+
+task installReact(type: Exec) {
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine 'npm.cmd', 'install' }
+    else {
+        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+    }
+}
+
+task buildReact(type: Exec) {
+    dependsOn "installReact"
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "run-script", "build"
+    } else {
+        commandLine "npm", "run-script", "build"
+    }
+}
+
+task copyReactBuildFiles(type: Copy) { // spring jsx[리액트파일] 인식불가 => 1. 우선 리액트 실행
+    dependsOn "buildReact"
+    from "$frontendDir/build"
+    into "$projectDir/src/main/resources/static"
+}
+
+
+
+
+@Configuration // 컴포넌트 등록
+public class MvcConfiguration extends WebMvcConfigurerAdapter {
+                                // 미리 구성된 스프링 Mvc 설정 연결 클래스
+
+    @Override // view 컨트롤러 오버라이딩 [ 이유 : 리액트 view와 연결 하기 위해서 ]
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController( "/{spring:\\w+}").setViewName("forward:/");
+        registry.addViewController( "/**/{spring:\\w+}").setViewName("forward:/");
+        registry.addViewController( "/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}").setViewName("forward:/");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
