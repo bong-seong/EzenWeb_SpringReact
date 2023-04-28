@@ -35,6 +35,33 @@ export default function ReplyContent( props ) {
     }
 
 
+    let rereplyContent = () => {
+        replies.map( (o) => {
+            if( reply.rno == o.rindex ){
+                return (<>
+                    <ListItem>
+                        <ListItemText>
+                            <InputBase
+                                type="text"
+                                id={ o.rno }
+                                value={ o.rcontent }
+                                multiline={ true }
+                                fullWidth={ true }
+                            />
+                        </ListItemText>
+
+                        <ListItemSecondaryAction>
+                            <IconButton aria-label="Delete todo" onClick={ deleteEventHandler }>
+                                <DeleteOutlined />
+                            </IconButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                </>);
+            }
+        })
+    }
+
+    console.log(rereplyContent)
 
     return (<>
         <ListItem>
@@ -47,15 +74,8 @@ export default function ReplyContent( props ) {
                     fullWidth={ true }
                 />
                 <div className="rereply" style={{display : "none"}}>
-                    {
-                        replies.map( (o) => {
-                            if( reply.rno == o.rindex ){
-                                return (<>
-                                    <div> { o.rcontent } </div>
-                                </>);
-                            }
-                        })
-                    }
+                    { rereplyContent() }
+                    <AddReply />
                 </div>
             </ListItemText>
 

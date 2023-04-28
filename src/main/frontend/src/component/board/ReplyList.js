@@ -15,11 +15,11 @@ import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
 
 export default function ReplyList( props ) {
 
+
     // 1. 상위 [ view ] 에게 받은 댓글 리스트
-    const [ replyDtoList , setReplyDtoList] = useState( props.replyList );
+
     const [ readOnly , setReadOnly] = useState( true );
-    const [ rereply , setRereply ] = useState('');
-    const [ rereplyBox , setRereplyBox ] = useState('');
+
 
     const loginSession = JSON.parse( sessionStorage.getItem("login_token") ) ;
     console.log( loginSession.mno );
@@ -53,7 +53,6 @@ export default function ReplyList( props ) {
         }
     }
 
-
     const editEventHandler = (e) => { console.log("editEventHandler")
         console.log(e.target.value);
         console.log(e.target.id );
@@ -76,11 +75,33 @@ export default function ReplyList( props ) {
     }
 
     // 대댓글 버튼 클릭 함수
-    const onReReply = (e) => {
+    let rereplyYN = true;
+
+    const onReReply = (e , rno ) => {
         console.log("대댓글");
         console.log( e.target.id );
-        let rcontent = prompt('대댓글을 입력하세요');
+        console.log( rno );
+
+        const className = 'rereply' + rno;
+        console.log( className )
+
+        if( rereplyYN ){
+            document.querySelector('.'+className).style.display = 'block';
+            rereplyYN = false;
+        }else{
+            document.querySelector('.'+className).style.display = 'none';
+            rereplyYN = true;
+        }
+
     }
+
+    const onReReplyWriteHandler = (e,rno) => {
+        console.log( "리리플함수실행")
+        console.log( rno );
+        props.OnReReplyWrite( document.querySelector('.rercontent'+rno).value , rno );
+        document.querySelector('.rercontent'+rno).value = '';
+    }
+
 
     return (<>
         <input className="rcontent" type="text"/>
@@ -103,17 +124,40 @@ export default function ReplyList( props ) {
                                     multiline={ true }
                                     fullWidth={ true }
                                 />
-
+                                <div className={"rereply"+r.rno} style={{ display:'none' , justifyContent : 'left' }}>
+                                    {
+                                        props.replyList.map( (o) => {
+                                            if( r.rno == o.rindex ){
+                                                return (<>
+                                                    <div style={{ display : "flex"}}>
+                                                        <InputBase
+                                                            inputProps={{ readOnly : readOnly }}
+                                                            onKeyDown = { turnOnReadOnly }
+                                                            onChange = { editEventHandler }
+                                                            onClick={ turnOffReadOnly }
+                                                            type="text"
+                                                            id={ o.rno }
+                                                            value={ o.rcontent }
+                                                            multiline={ true }
+                                                        />
+                                                        <button onClick={ (e) => onDeleteHandler( e, o.rno) } > 삭제 </button>
+                                                    </div>
+                                                </>);
+                                            }
+                                        })
+                                    }
+                                    <div>
+                                        <input className={"rercontent"+r.rno} type="text" /> <button onClick={ (e) => onReReplyWriteHandler( e, r.rno ) }> 등록 </button>
+                                    </div>
+                                </div>
                             </ListItemText>
-                            <div className={"rereply"+r.rno}></div>
-
                             <ListItemSecondaryAction>
                                 <Button
                                     style={{ height:'100%' }}
                                     color="secondary"
                                     variant="outlined"
                                     id={ r.rno }
-                                    onClick={ (e) => onReReply(e) }
+                                    onClick={ (e) => onReReply(e , r.rno ) }
                                 >
                                     대댓글
                                 </Button>
@@ -123,12 +167,11 @@ export default function ReplyList( props ) {
                             </ListItemSecondaryAction>
                         </ListItem>
                     </>);
-                }else{
-                    return ( <>
-                        <div> 대댓글 : { r.rcontent } </div>
-                    </> )
                 }
             })
         }
     </>);
 }
+
+
+

@@ -295,7 +295,7 @@ public class BoardService {
         return false;
     }
 
-    public boolean deleteReply( int rno , int mno ){
+    public boolean deleteReply( int rno ){
 
         Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if( o.equals("anonymousUser") ) {

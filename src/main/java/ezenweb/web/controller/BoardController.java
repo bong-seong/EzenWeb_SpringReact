@@ -113,8 +113,8 @@ public class BoardController {
     }
 
     @DeleteMapping("/reply")
-    public boolean deleteReply( @RequestParam int rno , @RequestParam int mno ){
-        return boardService.deleteReply(rno , mno );
+    public boolean deleteReply( @RequestParam int rno ){
+        return boardService.deleteReply( rno );
     }
 
 }

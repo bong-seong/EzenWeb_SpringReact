@@ -119,7 +119,7 @@ export default function View( props ) {
      // 3. 댓글 삭제 및 렌더링
      const onReplyDelete = (rno) => {
         console.log( rno );
-        axios.delete("/board/reply" , { params : { rno : rno }  } ).then( (r) => {
+        axios.delete("/board/reply" , { params : { rno : rno } } ).then( (r) => {
             console.log( r.data );
             if( r.data ){
                 alert('삭제완료');
@@ -151,7 +151,7 @@ export default function View( props ) {
             <h3>{ board.btitle }</h3>
             <p>{ board.bcontent }</p>
             { btnBox() }
-            { /*
+
             <List>
                 <ReplyList
                     onUpdateRender={ onUpdateRender }
@@ -163,9 +163,6 @@ export default function View( props ) {
                     bno={ board.bno }
                 />
             </List>
-            */ }
-
-            <Reply bno={params.bno} />
 
         </Container>
     </>);
