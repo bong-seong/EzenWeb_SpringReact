@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'; // HTTP 경로상의 매개변수 
 import axios from 'axios';
 import AddReply from './AddReply'
 import ReplyContent from './ReplyContent'
+import style from '../../css/board/reply.css';
 
 import { List , Paper , Container , Button } from '@mui/material';
 
@@ -22,7 +23,7 @@ export default function ReplyList( props ) {
 
 
     const loginSession = JSON.parse( sessionStorage.getItem("login_token") ) ;
-    console.log( loginSession.mno );
+
 
     const turnOffReadOnly = () => { console.log("turnOffReadOnly")
         setReadOnly( false ); // readOnly = true 수정불가능 / false 수정가능
@@ -75,7 +76,7 @@ export default function ReplyList( props ) {
     }
 
     // 대댓글 버튼 클릭 함수
-    let rereplyYN = true;
+    let rereplyYN = {} ;
 
     const onReReply = (e , rno ) => {
         console.log("대댓글");
@@ -83,14 +84,15 @@ export default function ReplyList( props ) {
         console.log( rno );
 
         const className = 'rereply' + rno;
-        console.log( className )
+        console.log( className );
+        console.log( rereplyYN );
 
-        if( rereplyYN ){
-            document.querySelector('.'+className).style.display = 'block';
-            rereplyYN = false;
-        }else{
+        if( rereplyYN[rno] ){
             document.querySelector('.'+className).style.display = 'none';
-            rereplyYN = true;
+            rereplyYN[rno] = false;
+        }else{
+            document.querySelector('.'+className).style.display = 'block';
+            rereplyYN[rno] = true;
         }
 
     }
@@ -105,7 +107,7 @@ export default function ReplyList( props ) {
 
     return (<>
         <input className="rcontent" type="text"/>
-        <button onClick={ onWriteHandler }> 댓글작성 </button>
+        <button className="replybtn" onClick={ onWriteHandler }> 댓글작성 </button>
         <h3> 댓글 목록 </h3>
         {
             props.replyList.map( (r) => {
@@ -113,17 +115,18 @@ export default function ReplyList( props ) {
                     return (<>
                         <ListItem>
                             <ListItemText>
-                                <InputBase
-                                    inputProps={{ readOnly : readOnly }}
-                                    onKeyDown = { turnOnReadOnly }
-                                    onChange = { editEventHandler }
-                                    onClick={ turnOffReadOnly }
-                                    type="text"
-                                    id={ r.rno }
-                                    value={ r.rcontent }
-                                    multiline={ true }
-                                    fullWidth={ true }
-                                />
+                                <div style={{ display:"flex" , justifyContent:"left" }}>
+                                    <InputBase
+                                        inputProps={{ readOnly : readOnly }}
+                                        onKeyDown = { turnOnReadOnly }
+                                        onChange = { editEventHandler }
+                                        onClick={ turnOffReadOnly }
+                                        type="text"
+                                        id={ r.rno }
+                                        value={ r.rcontent }
+                                    />
+                                    <span> 작성자 : {r.mname } </span> <span> 작성일 : {r.rdate } </span>
+                                </div>
                                 <div className={"rereply"+r.rno} style={{ display:'none' , justifyContent : 'left' }}>
                                     {
                                         props.replyList.map( (o) => {
@@ -140,6 +143,7 @@ export default function ReplyList( props ) {
                                                             value={ o.rcontent }
                                                             multiline={ true }
                                                         />
+                                                        <span> 작성자 : { o.mname } </span> <span> 작성일 : { o.rdate } </span>
                                                         <button onClick={ (e) => onDeleteHandler( e, o.rno) } > 삭제 </button>
                                                     </div>
                                                 </>);

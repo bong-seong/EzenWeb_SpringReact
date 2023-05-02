@@ -51,8 +51,8 @@ export default function Login( props ) {
         <form className="loginForm">
             <TextField fullWidth className="mname" id="mname" label="이름" variant="standard" />
             <TextField fullWidth className="mname" id="mname" label="이름" variant="standard" />
-            <table>
-                <tbody>
+            <table className="loginbox">
+                <tbody className="loginbox_body">
                     <tr>
                         <td>아이디[이메일] : </td> <td> <input type="text" name="memail" className="memail" /> </td>
                     </tr>
@@ -64,16 +64,16 @@ export default function Login( props ) {
                         <td colSpan="2"> <a href="/member/find"> 아아디 / 비밀번호 찾기 </a> </td>
                     </tr>
                     <tr>
-                        <td colSpan="2"> <button type="button" onClick={ onLogin }> 로그인 </button> </td>
+                        <td colSpan="2"> <button className="loginbtn" type="button" onClick={ onLogin }> 로그인 </button> </td>
                     </tr>
                     <tr>
-                        <td colSpan="2"> <a href="/oauth2/authorization/google"> 구글로그인 </a></td>
+                        <td colSpan="2"> <a href="/oauth2/authorization/google" className="googole_login"> 구글로그인 </a></td>
                     </tr>
                     <tr>
-                        <td colSpan="2"> <a href="/oauth2/authorization/kakao"> 카카오로그인 </a></td>
+                        <td colSpan="2"> <a href="/oauth2/authorization/kakao" classNAme="kakao_login"> 카카오로그인 </a></td>
                     </tr>
                     <tr>
-                        <td colSpan="2"> <a href="/oauth2/authorization/naver"> 네이버로그인 </a></td>
+                        <td colSpan="2"> <a href="/oauth2/authorization/naver" className="naver_login"> 네이버로그인 </a></td>
                     </tr>
                 </tbody>
             </table>

@@ -18,6 +18,8 @@ public class ReplyDto {
     private int bno;
     private int mno;
 
+    private String mname;
+
     public ReplyEntity toEntity() {
         return ReplyEntity.builder()
                 .rcontent( this.rcontent )

@@ -13,4 +13,8 @@ public interface ReplyEntityRepository extends JpaRepository<ReplyEntity , Integ
     @Query( value = "select * from reply where bno = :bno" , nativeQuery = true )
     List<ReplyEntity> findBybno( int bno );
 
+    @Query( value = "select * from reply where rindex = :rno" , nativeQuery = true )
+    List<ReplyEntity> findByRindex( int rno );
+
+
 }

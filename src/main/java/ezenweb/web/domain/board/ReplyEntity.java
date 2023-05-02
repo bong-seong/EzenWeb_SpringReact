@@ -44,6 +44,7 @@ public class ReplyEntity extends BaseTime {
                 .rindex( this.rindex )
                 .bno( this.boardEntity.getBno() )
                 .mno( this.memberEntity.getMno() )
+                .mname( this.memberEntity.getMname() )
                 .build();
     }
 }

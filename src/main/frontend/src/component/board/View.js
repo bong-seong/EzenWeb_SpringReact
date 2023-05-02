@@ -108,7 +108,10 @@ export default function View( props ) {
             console.log( r.data )
             if( r.data == true ){
                 getBoard();
+            }else{
+                alert('로그인 후 이용 가능한 서비스입니다.');
             }
+
         })
      }
 

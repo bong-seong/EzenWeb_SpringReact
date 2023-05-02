@@ -312,9 +312,18 @@ public class BoardService {
 
             if( memberEntity.getMno() != optionalReplyEntity.get().getMemberEntity().getMno() ){
                 return false;
+            }else{
+                replyEntityRepository.delete( optionalReplyEntity.get() );
+
+                List<ReplyEntity> rereply = replyEntityRepository.findByRindex( rno );
+
+                rereply.forEach( (r) -> {
+                    replyEntityRepository.delete( r );
+                });
+
+                return true;
             }
-            replyEntityRepository.delete( optionalReplyEntity.get() );
-            return true;
+
         }
 
         return false;
