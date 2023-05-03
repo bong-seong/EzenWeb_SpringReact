@@ -1,0 +1,46 @@
+소켓 [ webSocket ]
+	1. 서버소켓 만들기 [ 스프링 기준 ]
+		1. start.spring.io [ 라이브러리 추가 ] 
+			implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	
+	2. 서버소켓 관리하는 클래스
+
+	@Slf4j // 로그
+	@Component // 빈 등록 [ 스프링이 해당 클래스를 관리 = 제어역전 ]
+	public class ChattingHandler extends TextWebSocketHandler {
+
+	    @Override   // 1. 클라이언트가 서버소켓으로 부터 접속했을때
+	    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+	        log.info("afterConnection : " + session );
+	    }
+
+	    @Override   // 2. 클라이언트로 부터 메시지를 받았을때
+	    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+	        log.info("textMessage : " + session );
+	        log.info("textMessageMessage : " + message );
+	    }
+
+	    @Override   // 3. 클라이언트가 서버소켓으로 부터 나갔을때
+	    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+	        log.info("ConnectionClosed : " + session );
+	        log.info("ConnectionClosedStatus : " + status );
+	    }
+
+	}
+
+	
+	3. 서버소켓의 URL 매핑 설정 클래스 [ 	@EnableWebSocket ]
+
+	@Configuration // 컴포넌트 등록
+	@EnableWebSocket // * WS 프로토콜의 URL 매핑
+	public class WebSocketConfiguration implements WebSocketConfigurer {
+
+	    @Autowired // 컴포넌트에 등록한 클래스이므로 @Autowired 가능
+	    private ChattingHandler chattingHandler;
+
+	    @Override // 서버소켓으로 사용되고 있는 클래스들 등록
+	    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+	        registry.addHandler( chattingHandler , "/chat").setAllowedOrigins("*");
+
+	    }
+	}
