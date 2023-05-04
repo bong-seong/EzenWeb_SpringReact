@@ -1,6 +1,7 @@
 import React , { useState , useEffect , useRef } from 'react';
 import { List , Paper , Container , Button } from '@mui/material';
 import styles from '../../css/board/Chatting.css';
+import axios from 'axios';
 
 export default function Chatting( props ) {
 
@@ -10,6 +11,9 @@ export default function Chatting( props ) {
     console.log( msgContent );
 
     let msgInput = useRef(null); // 채팅입력창[ input ] DOM 객체 제어
+    let fileInput = useRef(null);
+    let fileForm = useRef(null);
+
 
     // 1. 재렌더링 될때마다 새로운 접속
     // let clientSocket = new WebSocket("ws/localhost:8080/chat");
@@ -60,10 +64,23 @@ export default function Chatting( props ) {
         let msgBox = {
             id : id,                            // 보낸사람
             msg : msgInput.current.value,       // 보낸 내용
-            time : time                         // 현재 시간만
+            time : time,                        // 현재 시간만
+            type : 'msg'
         }
-        ws.current.send( JSON.stringify( msgBox ) ); // 클라이언트 메시지 전송 [ .send() ]
-        msgInput.current.value = '' ;
+        if( msgBox.msg != '') { // 내용이 있으면 메시지 전송
+            ws.current.send( JSON.stringify( msgBox ) ); // 클라이언트 메시지 전송 [ .send() ]
+            msgInput.current.value = '' ;
+        }
+
+        // 2. 첨부파일 전송 [ axios 이용하여 서버로 첨부파일 업로드 ]
+        if( fileInput.current.value != '' ){ // 첨부파일이 존재하면
+            axios.post("/chat/fileupload" , new FormData( fileForm.current ) ).then( r => {
+                console.log( r );
+            })
+        }
+
+
+
     }
 
     // 5. 렌더링 할때마다 스크롤 가장 하단으로 내리기
@@ -90,9 +107,15 @@ export default function Chatting( props ) {
             }
             </div>
             <div className="chatInputBox">
+
                 <span> { id } </span>
                 <input className="msgInput" ref={ msgInput } type="text" />
                 <button onClick={ onSend }> 전송 </button>
+
+                <form ref={ fileForm } >
+                    <input ref={ fileInput } type="file" name="attachFile" />
+                </form>
+
             </div>
         </Container>
     </>)
