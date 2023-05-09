@@ -1,6 +1,10 @@
 import React , { useState , useEffect } from 'react';
 import axios from 'axios';
 
+import ProductTable from './ProductTable';
+
+import { Container } from '@mui/material';
+
 export default function DashBoard( props ) {
 
 
@@ -22,10 +26,16 @@ export default function DashBoard( props ) {
     }
 
     return(<>
-        <h3> 관리자 페이지 </h3>
+        <Container>
 
-        <h6> 게시판 카테고리 추가 </h6>
-        <input type="text" className="cname" />
-        <button onClick={ setCategory } type="button"> 카테고리등록 </button>
+            <h3> 관리자 페이지 </h3>
+
+            <h6> 게시판 카테고리 추가 </h6>
+            <input type="text" className="cname" />
+            <button onClick={ setCategory } type="button"> 카테고리등록 </button>
+
+            <ProductTable />
+
+        </Container>
     </>);
 }

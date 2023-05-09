@@ -35,4 +35,6 @@ public class ProductDto {
                 .build();
     }
 
+    // 2. 수정용
+
 }
