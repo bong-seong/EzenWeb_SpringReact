@@ -94,9 +94,9 @@ public class ProductService { /* 주요기능과 DB 처리 요청 */
         // 2. 해당 엔티티가 존재하면
         optionalProductEntity.ifPresent( o -> {
             productEntityRepository.delete( o ) ;
-        } );
+        });
 
-        return false;
+        return true;
     }
 
 }
