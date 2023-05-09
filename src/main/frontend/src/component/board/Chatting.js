@@ -14,7 +14,6 @@ export default function Chatting( props ) {
     let fileInput = useRef(null);
     let fileForm = useRef(null);
 
-
     // 1. 재렌더링 될때마다 새로운 접속
     // let clientSocket = new WebSocket("ws/localhost:8080/chat");
 
@@ -59,12 +58,10 @@ export default function Chatting( props ) {
         console.log( msgInput.current.value );
         // msgInput 변수가 참조중인  <input ref={ msgInput } > 해당 input 를 DOM 객체로 호출
 
-        let time = new Date().toLocaleTimeString();
-
         let msgBox = {
             id : id,                            // 보낸사람
             msg : msgInput.current.value,       // 보낸 내용
-            time : time,                        // 현재 시간만
+            time : new Date().toLocaleTimeString(),                        // 현재 시간만
             type : 'msg'
         }
         if( msgBox.msg != '') { // 내용이 있으면 메시지 전송
@@ -74,13 +71,9 @@ export default function Chatting( props ) {
 
         // 2. 첨부파일 전송 [ axios 이용하여 서버로 첨부파일 업로드 ]
         if( fileInput.current.value != '' ){ // 첨부파일이 존재하면
-            axios.post("/chat/fileupload" , new FormData( fileForm.current ) ).then( r => {
-                console.log( r );
-            })
+            let formData = new FormData( fileForm.current )
+            fileAxios( formData ); // 파일전송
         }
-
-
-
     }
 
     // 5. 렌더링 할때마다 스크롤 가장 하단으로 내리기
@@ -89,23 +82,81 @@ export default function Chatting( props ) {
     },[msgContent])
 
 
+    // 6. 파일전송 axios
+    const fileAxios = ( formData ) => {
+        axios.post("/chat/fileupload" , formData ).then( r => {
+            console.log( r.data );
+            // 다른 소켓들에게 업로드 결과 전달
+            let msgBox = {
+                id : id,                            // 보낸사람
+                msg : msgInput.current.value,       // 보낸 내용
+                time : new Date().toLocaleTimeString(),                        // 현재 시간만
+                type : 'file',
+                fileInfo : r.data // 업로드 후 응답받은 파일 정보
+            }
+            ws.current.send( JSON.stringify( msgBox ) ); // 클라이언트 메시지 전송 [ .send() ]
+            fileInput.current.value = '' ;
+        })
+    }
+
+
     return (<>
         <Container className="Container">
-            <div className="chatContentBox">
+
+            <div
+                className="chatContentBox"
+                onDragEnter={ (e) => { console.log("dragEnter");
+                    e.preventDefault(); { /* 상위 이벤트 제거 : 브라우저내 동일한 이벤트 제거 */ }
+                } }
+                onDragOver= { (e) => { console.log("dragOver");
+                    e.preventDefault(); { /* 상위 이벤트 제거 */ }
+                    e.target.style.backgroundColor = '#e8e8e8';
+                } }
+                onDragLeave={ (e) => { console.log("dragLeave");
+                    e.preventDefault(); { /* 상위 이벤트 제거 */ }
+                    e.target.style.backgroundColor = '#ffffff';
+                } }
+                onDrop={ (e) => { console.log("drop");
+                    e.preventDefault(); { /* 상위 이벤트 제거 */ }
+                    { /* 드랍된 파일들 호출 = e.dataTransfer.files */ }
+
+                    let files = e.dataTransfer.files;
+                    for( let i=0; i<files.length; i++ ) {
+                        { /* 파일일이 존재하면*/ }
+                        if( files[i] != null && files[i] != undefined ) {
+                            let formData = new FormData( fileForm.current );
+                            { /* 드래그된 파일 추가 */ }
+                            formData.set( 'attachFile' , files[i] );
+                            fileAxios( formData );
+                        }
+                    }
+                    e.target.style.backgroundColor = '#ffffff';
+                } }
+            >
             {
                 msgContent.map( (m) => {
                     return (<>
-
-
                         <div className="chatContent" style={ m.id == id ? { backgroundColor: '#e4ebea' , textAlign : 'right' } : { } }>
                             <span> { m.id } </span>
-                            <span> { m.msg } </span>
+                            {
+                                m.type == 'msg'
+                                ? <span> { m.msg } </span>
+                                : (<>
+                                    <span>
+                                        <span> { m.fileInfo.originalFilename } </span>
+                                        <span> { m.fileInfo.sizeKb } </span>
+                                        <span> <a href={"/chat/filedownload?uuidFile="+ m.fileInfo.uuidFile}> 저장 </a> </span>
+                                    </span>
+                                </>)
+                            }
+
                             <span> { m.time } </span>
                         </div>
                     </>)
                 })
             }
             </div>
+
             <div className="chatInputBox">
 
                 <span> { id } </span>

@@ -22,8 +22,9 @@ public class ChatController {
     }
 
     @GetMapping("/filedownload") // chat 관련 첨부파일 다운로드
-    public void fileDownload( @RequestParam("filepath") String filePath ) {
-
+    public void fileDownload( @RequestParam("uuidFile") String uuidFile ) {
+        System.out.println( "uuidFile :  " + uuidFile );
+        fileService.fileDownload(uuidFile);
     }
 
 }
