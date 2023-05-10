@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class ProductDto {
@@ -17,9 +21,13 @@ public class ProductDto {
     private String pmanufacturer;
     private byte pstate;
     private int pstock;
+
     // 관리자용
     private String cdate;
     private String udate;
+
+    // 첨부파일 입력용
+    private List<MultipartFile> pimgs;
 
     // 1. 저장용 [ 관리자 페이지 ]
     public ProductEntity toSaveEntity() {

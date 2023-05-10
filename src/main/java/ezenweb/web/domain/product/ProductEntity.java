@@ -1,13 +1,14 @@
 package ezenweb.web.domain.product;
 
 import ezenweb.web.domain.BaseTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
@@ -24,6 +25,11 @@ public class ProductEntity extends BaseTime {
     @ColumnDefault("0")@Column( nullable = false ) private int pstock;              // 제품 재고/수량
 
     // 제품이미지 [ 1 : 다 ] 연관관계
+    // pk 필드 선언시 // mappedBy = "참조할필드명" // 제약조건 : pk 객체가 삭제되면 fk 객체의 제약조건
+    @OneToMany( mappedBy = "productEntity" , cascade = CascadeType.REMOVE )
+    @ToString.Exclude @Builder.Default
+    List<ProductImgEntity> productImgEntityList = new ArrayList<>();
+
     // 구매내역 [ 1 : 다 ] 연관관계 [ *추후 ]
 
     // 1. 출력용 [ 관리자보는 입장 - 관리자 페이지에서 출력하는 용도 ]
@@ -46,3 +52,12 @@ public class ProductEntity extends BaseTime {
     // public ProductDto toUserDto(){}
 
 }
+
+/*
+    CascadeType.ALL 		: pk 객체 삭제시 fk 객체 모두 삭제/수정
+	CascadeType.MERGE 	: pk 객체 수정시 fk 객체 모두 수정
+	CascadeType.REMOVE	: pk 객체 삭제시 fk 객체 모두 삭제
+	    vs @OnDelete( action = OnDeleteAction.CASCADE )
+
+	CascadeType.DETACH	: pk 객체 삭제/수정에 변경사항 fk 에 반영 안함
+ */

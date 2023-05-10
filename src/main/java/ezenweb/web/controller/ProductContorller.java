@@ -20,7 +20,8 @@ public class ProductContorller { /* 리액트와 통신 역할[매핑] */
         return productService.get();
     }
     @PostMapping("")
-    public boolean post( @RequestBody ProductDto productDto ) {
+    public boolean post( ProductDto productDto ) {
+        log.info("Product Write : " + productDto );
         return productService.post( productDto );
     }
     @PutMapping("")
@@ -32,3 +33,22 @@ public class ProductContorller { /* 리액트와 통신 역할[매핑] */
         return productService.delete( id );
     }
 }
+
+/*
+    1. 객체 전송 [ post , put ]
+        axios.post( 'url' , object )
+            ------> @RequestBody
+
+    2. 폼 전송 [ post 필수 ]
+        axios.post( 'url' , object )
+            ------> DTO 받을때는 어노테이션 생략
+            ------> @RequestParam("form 필드이름") : 폼 내 필드 하나의 데이터 매핑
+
+    3. 쿼리스트링 전송 [ get , post , put , delete ]
+        axios.post( 'url' , { params : { 필드명 : 데이터 } )
+            ------> @RequestParam
+
+    4. 매개변수 전송[ get , post , put , delete ]
+        axios.post( 'url/데이터1/데이터2' )
+            ------> @PathVariable
+ */

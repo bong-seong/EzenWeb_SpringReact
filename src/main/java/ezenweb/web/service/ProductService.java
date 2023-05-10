@@ -1,13 +1,13 @@
 package ezenweb.web.service;
 
-import ezenweb.web.domain.product.ProductDto;
-import ezenweb.web.domain.product.ProductEntity;
-import ezenweb.web.domain.product.ProductEntityRepository;
+import ezenweb.web.domain.file.FileDto;
+import ezenweb.web.domain.product.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 public class ProductService { /* 주요기능과 DB 처리 요청 */
 
     @Autowired private ProductEntityRepository productEntityRepository;
-
+    @Autowired private ProductImgEntityRepository productImgEntityRepository;
+    @Autowired private FileService fileService;
 
     @Transactional
     public List<ProductDto> get() {
@@ -54,10 +55,35 @@ public class ProductService { /* 주요기능과 DB 처리 요청 */
         productDto.setId( pid );
 
         // 3. DB 저장
-        productEntityRepository.save( productDto.toSaveEntity() );
+        ProductEntity productEntity = productEntityRepository.save( productDto.toSaveEntity() );
+
+        // 4. 첨부파일 업로드
+        // 만약에 첨부파일이 1개 이상이면
+        if( productDto.getPimgs().size() > 0 ){
+            // 하나씩 업로드
+            productDto.getPimgs().forEach( (img) ->{
+                // 업로드된 파일 결과 [ 리턴 ]
+                FileDto fileDto = fileService.fileUpload( img );
+
+                // DB 저장
+                ProductImgEntity productImgEntity = productImgEntityRepository.save( ProductImgEntity.builder()
+                                                        .originalFilename( fileDto.getOriginalFilename() )
+                                                        .uuidFile( fileDto.getUuidFile() )
+                                                        .build()
+                                                    );
+
+                // 단방향 : 이미지객체에 제품객체 등록
+                productImgEntity.setProductEntity( productEntity );
+
+                // 양방향 : 제품객체에 이미지객체 등록
+                productEntity.getProductImgEntityList().add( productImgEntity );
+            });
+        }
 
         return true;
-    }
+    } // 2 end
+
+
 
     @Transactional
     public boolean put( ProductDto productDto ) {
@@ -93,10 +119,23 @@ public class ProductService { /* 주요기능과 DB 처리 요청 */
         Optional<ProductEntity> optionalProductEntity = productEntityRepository.findById( id );
         // 2. 해당 엔티티가 존재하면
         optionalProductEntity.ifPresent( o -> {
+
+            // 3. 파일도 같이 삭제
+            if( o.getProductImgEntityList().size() > 0 ) {
+                o.getProductImgEntityList().forEach( (img) -> {
+                    // 1. 해당 이미지 경로를 찾아서 파일 객체화 
+                    File file = new File( fileService.path + img.getUuidFile() );
+                    // 2. 만약에 해당 경로의 파일이 존재하면 삭제
+                    if( file.exists()){
+                        file.delete();
+                    }
+                });
+            }
+
+            // 4. DB/엔티티 삭제
             productEntityRepository.delete( o ) ;
         });
-
         return true;
-    }
 
+    }
 }
