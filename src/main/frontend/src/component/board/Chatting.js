@@ -52,6 +52,8 @@ export default function Chatting( props ) {
         }
     })
 
+
+
     // 4. 메시지 전송
     const onSend = () => {
         console.log( msgInput );

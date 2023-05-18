@@ -1,5 +1,6 @@
 package ezenweb.web.domain.product;
 
+import ezenweb.web.domain.file.FileDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,9 @@ public class ProductDto {
 
     // 첨부파일 입력용
     private List<MultipartFile> pimgs;
+
+    // 첨부파일 출력용
+    private List<FileDto> files = new ArrayList<>();
 
     // 1. 저장용 [ 관리자 페이지 ]
     public ProductEntity toSaveEntity() {

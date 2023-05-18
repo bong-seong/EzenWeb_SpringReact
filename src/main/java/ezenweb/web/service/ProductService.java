@@ -23,6 +23,18 @@ public class ProductService { /* 주요기능과 DB 처리 요청 */
     @Autowired private ProductImgEntityRepository productImgEntityRepository;
     @Autowired private FileService fileService;
 
+    // 1. [ main 출력용 ] 현재 판매중인 제품만 호출
+    @Transactional
+    public List<ProductDto> mainGet(){
+        List<ProductEntity> productEntityList = productEntityRepository.findAllState();
+
+        List<ProductDto> productDtoList = productEntityList.stream().map(
+                o -> o.toMainDto()
+        ).collect( Collectors.toList() );
+
+        return productDtoList;
+    }
+
     @Transactional
     public List<ProductDto> get() {
         log.info("get : " );
@@ -33,7 +45,9 @@ public class ProductService { /* 주요기능과 DB 처리 요청 */
         // 2. 모든 엔티티를 DTO 로 변환
                         // js : 리스트명.forEach( o => 실행문 );       리스트명.map( o => 실행문 );
                         // java : 리스트명.forEach( o -> 실행문 );     리스트명.stream().map( o -> 실행문 );
-        List<ProductDto> productDtoList = productEntityList.stream().map( o -> o.toAdminDto() ).collect( Collectors.toList() );
+        List<ProductDto> productDtoList = productEntityList.stream().map(
+                o -> o.toAdminDto()
+        ).collect( Collectors.toList() );
 
         return productDtoList;
     }

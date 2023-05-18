@@ -1,5 +1,6 @@
 package ezenweb.web.domain.product;
 
+import ezenweb.web.domain.file.FileDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,5 +18,12 @@ public class ProductImgEntity {
         @JoinColumn(name = "id")
         @ToString.Exclude
         private ProductEntity productEntity;
+
+        public FileDto toFileDto() {
+                return FileDto.builder()
+                        .uuidFile( this.uuidFile )
+                        .originalFilename( this.originalFilename )
+                        .build();
+        }
 
 }

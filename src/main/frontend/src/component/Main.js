@@ -1,10 +1,30 @@
 import React , { useState , useEffect } from 'react';
+import axios from 'axios';
+
 
 export default function Main( props ){
 
 
+    const [ items , setItems ] = useState([]);
+
+    useEffect( () => {
+        axios.get("/product/main").then( r =>{
+            setItems( r.data );
+        })
+    } , [] )
+
+    console.log( items );
 
     return (<>
-        <div> 메인페이지 </div>
+        <div>
+            {
+                items.map( item => {
+                    return (<div>
+                        <img src={ "/static/media/" + item.files[0].uuidFile } />
+                        <div> { item.pname } </div>
+                    </div>)
+                })
+            }
+        </div>
     </>);
 }

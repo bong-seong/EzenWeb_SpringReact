@@ -24,7 +24,7 @@ public class ChattingHandler extends TextWebSocketHandler {
     }
 
     @Override   // 2. 클라이언트로 부터 메시지를 받았을때
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage( WebSocketSession session, TextMessage message) throws Exception {
         log.info("textMessage : " + session );
         log.info("textMessageMessage : " + message );
 
@@ -39,5 +39,6 @@ public class ChattingHandler extends TextWebSocketHandler {
         log.info("ConnectionClosedStatus : " + status );
         webSocketSessionList.remove( session ); // 클라이언트 세션이 나갔을때 리스트에서 제거
     }
+
 
 }

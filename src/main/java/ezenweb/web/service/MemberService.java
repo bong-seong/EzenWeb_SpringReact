@@ -91,7 +91,7 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         memberDto.setMemail( email );
         memberDto.setMname( name );
         Set<GrantedAuthority> 권한목록 = new HashSet<>();
-        SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority( "ROLE_user" );
+        SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority( "ROLE_USER" );
         권한목록.add( 권한 );
         memberDto.set권한목록( 권한목록 );
 
@@ -99,7 +99,7 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         MemberEntity entity = memberEntityRepository.findByMemail( email );
         if( entity == null ) { // 첫방문
             // DB 처리 [ 첫 방문시에만 db 등록 , 그이후 방문시부터는 db 수정 ]
-            memberDto.setMrole("oauthuser"); // DB에 저장할 권한명
+            memberDto.setMrole("USER"); // DB에 저장할 권한명
             memberEntityRepository.save( memberDto.toEntity() );
         }else{ // 두번째 방문 이상이면 수정처리
             entity.setMname( name );
@@ -266,7 +266,6 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         log.info( "dto : " + dto);
         return dto ; // UserDetails : 원본 데이터의 검증할 계정 , 패스워드 포함
     }
-
 
     // 2. [ 세션에 존재하는 ] 회원정보
     @Transactional
